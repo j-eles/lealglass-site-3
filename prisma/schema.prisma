@@ -1,0 +1,25 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Lead capturado pelo formulário de orçamento do site.
+model Lead {
+  id        String   @id @default(cuid())
+  name      String
+  company   String?
+  phone     String
+  email     String?
+  project   String?
+  message   String?
+  source    String   @default("website")
+  status    String   @default("new")
+  createdAt DateTime @default(now())
+}

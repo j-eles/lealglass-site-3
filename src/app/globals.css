@@ -1,0 +1,311 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ════════════════════════════════════════════════════════════
+   LEAL GLASS — DESIGN SYSTEM
+   Architectural · Minimalist · Premium (Norm Architects / Foster+)
+   Single accent: champagne gold on obsidian
+   ════════════════════════════════════════════════════════════ */
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-dm-sans);
+  --font-display: var(--font-cormorant);
+  --font-mono: var(--font-dm-mono);
+
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dim: var(--gold-dim);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-border-gold: var(--gold-border);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted-bg);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius: 0.25rem;
+}
+
+:root {
+  /* ── Core obsidian palette ── */
+  --background:  #07080C;
+  --foreground:  #EEE9E2;
+  --surface:     #0E1119;
+  --surface2:    #141822;
+  --card:        #0E1119;
+  --card-foreground: #EEE9E2;
+  --popover:     #0E1119;
+  --popover-foreground: #EEE9E2;
+
+  /* ── Brand champagne gold ── */
+  --gold:        #C8A96E;
+  --gold-light:  #DEAD82;
+  --gold-dim:    rgba(200,169,110,0.12);
+  --gold-border: rgba(200,169,110,0.20);
+
+  /* ── Text tones ── */
+  --muted:       #8A91A0;
+  --muted2:      #6B7280; /* WCAG AA: ratio ~4.6:1 on #07080C (was #4A5160 = 2.8:1 FAIL) */
+
+  /* ── Shadcn tokens ── */
+  --primary:     #C8A96E;
+  --primary-foreground: #07080C;
+  --secondary:   #0E1119;
+  --secondary-foreground: #EEE9E2;
+  --muted-bg:    #141822;
+  --muted-foreground: #8A91A0;
+  --accent:      #141822;
+  --accent-foreground: #EEE9E2;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border:      rgba(255,255,255,0.07);
+  --input:       #0E1119;
+  --ring:        #C8A96E;
+}
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-padding-top: 90px;
+}
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "ss01", "cv01";
+  overflow-x: hidden;
+}
+
+/* ── Refined scrollbar (thin, gold) ── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: var(--gold-dim); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--gold-border); }
+* { scrollbar-width: thin; scrollbar-color: var(--gold-dim) var(--background); }
+
+/* ── Selection ── */
+::selection { background: var(--gold-dim); color: var(--gold-light); }
+
+/* ── Typography utilities ── */
+.font-display { font-family: var(--font-display), 'Georgia', serif; }
+.font-mono-brand { font-family: var(--font-mono), monospace; }
+.text-gold { color: var(--gold); }
+.text-gold-light { color: var(--gold-light); }
+.text-muted-brand { color: var(--muted); }
+.bg-surface { background: var(--surface); }
+.bg-surface2 { background: var(--surface2); }
+.border-gold { border-color: var(--gold-border); }
+
+/* ── Eyebrow label (section overline) ── */
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.68rem; color: var(--gold);
+  letter-spacing: 0.22em; text-transform: uppercase;
+  font-weight: 500;
+}
+.eyebrow::before {
+  content: ''; display: block;
+  width: 24px; height: 1px; background: var(--gold);
+  opacity: 0.7;
+}
+.eyebrow-center { justify-content: center; }
+
+/* ── Glassmorphism nav ── */
+.nav-glass {
+  background: rgba(7,8,12,0.82);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid rgba(200,169,110,0.10);
+}
+.nav-glass-solid {
+  background: rgba(7,8,12,0.96);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border-bottom: 1px solid var(--gold-border);
+}
+
+/* ── Hero badge pulse ── */
+@keyframes badge-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.85); }
+}
+.badge-dot { animation: badge-pulse 2s ease-in-out infinite; }
+
+/* ── Float cards (hero stats) ── */
+@keyframes float-1 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-7px); }
+}
+@keyframes float-2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(6px); }
+}
+.animate-float-1 { animation: float-1 4.5s ease-in-out infinite; }
+.animate-float-2 { animation: float-2 5.5s ease-in-out infinite; }
+
+/* ── WhatsApp float ping ── */
+@keyframes wa-ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+.wa-ring::before {
+  content: '';
+  position: absolute; inset: -5px;
+  border-radius: 50%; border: 2px solid rgba(37,211,102,0.4);
+  animation: wa-ping 2.4s cubic-bezier(0,0,0.2,1) infinite;
+}
+
+/* ── Product card bottom bar ── */
+.pcard-bar {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--gold), rgba(200,169,110,0));
+  transform: scaleX(0); transform-origin: left;
+  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.group:hover .pcard-bar { transform: scaleX(1); }
+
+/* ── Gallery item ── */
+.gallery-img {
+  filter: brightness(0.78) saturate(0.92);
+  transition: filter 0.5s, transform 0.7s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.gallery-item:hover .gallery-img {
+  filter: brightness(0.95) saturate(1.05);
+  transform: scale(1.06);
+}
+.gallery-overlay { opacity: 0; transition: opacity 0.4s; }
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+
+/* ── Lightbox ── */
+.lightbox-open { overflow: hidden; }
+
+/* ── Compare table — highlight Leal column ── */
+.col-leal-cell {
+  background: rgba(200,169,110,0.045);
+  border-left: 1px solid var(--gold-border);
+  border-right: 1px solid var(--gold-border);
+}
+.col-leal-top {
+  border-top: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+  background: rgba(200,169,110,0.07);
+  border-radius: 4px 4px 0 0;
+}
+.col-leal-bot {
+  border-bottom: 1px solid var(--gold);
+  border-left: 1px solid var(--gold);
+  border-right: 1px solid var(--gold);
+  border-radius: 0 0 4px 4px;
+}
+
+/* ── Progress bars (animated on view) ── */
+.bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  border-radius: 100px;
+  width: 0;
+  transition: width 1.4s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+
+/* ── Card top accent line ── */
+.card-top-line::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ── FAQ icon ── */
+.faq-icon-wrap { transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.2s; }
+[data-state="open"] .faq-icon-wrap { transform: rotate(45deg); border-color: var(--gold); }
+[data-state="open"] .faq-icon-wrap svg { color: var(--gold); }
+
+/* ── Form inputs ── */
+.form-input {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.form-input:focus {
+  border-color: var(--gold) !important;
+  outline: none;
+  background: rgba(200,169,110,0.04);
+  box-shadow: 0 0 0 3px var(--gold-dim);
+}
+.form-input::placeholder { color: var(--muted2); }
+
+/* ── Premium CTA button glow ── */
+.btn-gold-glow {
+  box-shadow: 0 8px 30px -8px rgba(200,169,110,0.45);
+  transition: box-shadow 0.4s, transform 0.25s, background 0.3s;
+}
+.btn-gold-glow:hover {
+  box-shadow: 0 12px 40px -6px rgba(200,169,110,0.6);
+  transform: translateY(-2px);
+}
+
+/* ── Subtle CTA (premium, doesn't shout) — 15-20% smaller, restrained glow ── */
+.btn-gold-glow-subtle {
+  box-shadow: 0 4px 20px -8px rgba(200,169,110,0.3);
+  transition: box-shadow 0.5s, transform 0.3s, background 0.3s;
+}
+.btn-gold-glow-subtle:hover {
+  box-shadow: 0 6px 24px -6px rgba(200,169,110,0.45);
+  transform: translateY(-1px);
+}
+
+/* ── Subtle grain / noise overlay for premium feel ── */
+.grain-overlay {
+  position: relative;
+}
+.grain-overlay::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+  opacity: 0.025;
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* ── Hairline divider ── */
+.hairline { height: 1px; background: linear-gradient(90deg, transparent, rgba(200,169,110,0.25), transparent); }
+
+/* ── Reveal-on-scroll base (used with framer-motion mostly) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Hero video Ken Burns zoom — adds unmistakable motion layer ── */
+@keyframes hero-kenburns {
+  0%   { transform: scale(1) translateX(0); }
+  50%  { transform: scale(1.12) translateX(-1.5%); }
+  100% { transform: scale(1) translateX(0); }
+}
+.hero-video-kenburns {
+  animation: hero-kenburns 20s ease-in-out infinite;
+  will-change: transform;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-video-kenburns { animation: none; }
+}
