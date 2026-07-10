@@ -303,13 +303,13 @@ const AUTORIDADE = [
 const DEPOIMENTOS = [
   {
     quote:
-      'Entregaram 2.400 m² de esquadrias no prazo exato de 65 dias. Zero retrabalho. Isso nunca havia acontecido em 12 anos de obra.',
+      'Entregaram 800 m² de esquadrias no prazo exato de 65 dias. Zero retrabalho. Isso nunca havia acontecido em 12 anos de obra.',
     result: 'R$ 180 mil em retrabalhos evitados',
     initials: 'RM',
     name: 'Ricardo Mendes',
     role: 'Diretor de Obras',
     company: 'Construtora Vertis',
-    obra: 'Edifício Varandas Azul · 3.600 m²',
+    obra: 'Edifício Varandas Azul · 204 unidades',
   },
   {
     quote:
@@ -340,7 +340,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'A Leal Glass emite ART para todos os projetos?',
-    a: 'Sim. Todos os projetos possuem ART (Anotação de Responsabilidade Técnica) registrada no CREA-PR, assinada por engenheiro responsável do nosso quadro. A ART de projeto e execução está inclusa em todo contrato, sem custo adicional.',
+    a: 'Sim. Todos os projetos possuem ART (Anotação de Responsabilidade Técnica) registrada no CREA-PR, assinada por engenheiro responsável do nosso quadro. A ART de projeto e execução está inclusa em todo contrato.',
   },
   {
     q: 'Quais normas ABNT as esquadrias atendem?',
@@ -348,7 +348,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Qual a garantia oferecida pela Leal Glass?',
-    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato. Cobre mão de obra e peças.',
+    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
   },
   {
     q: 'Vocês atendem fora de Curitiba?',
@@ -727,7 +727,7 @@ export default function Home() {
               <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 bg-gold-dim border border-gold-border rounded-full">
                 <span className="badge-dot w-1.5 h-1.5 rounded-full bg-gold" />
                 <span className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold-light">
-                  Próxima janela de instalação: fevereiro 2026
+                  Próxima janela de instalação: novembro 2026
                 </span>
               </div>
 
