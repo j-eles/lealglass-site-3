@@ -97,18 +97,18 @@ const TRUST_ITEMS = [
   { icon: Star, text: 'Nota 5.0 no Google · 127 avaliações' },
   { icon: FileCheck, text: 'ART inclusa em todo contrato' },
   { icon: BookCheck, text: 'NBR 10821 · 15575 · 15928' },
-  { icon: Users, text: '500+ obras entregues no prazo' },
+  { icon: Users, text: '200+ obras entregues no prazo' },
 ];
 
 const HERO_STATS = [
-  { value: '500+', label: 'Obras entregues' },
+  { value: '200+', label: 'Obras entregues' },
   { value: '98%', label: 'Dentro do prazo' },
-  { value: 'R$ 0', label: 'Custo de retrabalho faturado em 2024' },
+  { value: 'R$ 0', label: 'Custo de retrabalho faturado em 2025' },
 ];
 
 const METRICS = [
-  { value: 500, suffix: '+', label: 'Obras entregues em Curitiba e região' },
-  { value: 42, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
+  { value: 200, suffix: '+', label: 'Obras entregues em Curitiba e região' },
+  { value: 15, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
   { value: 5, suffix: ' anos', label: 'De garantia em estrutura e vedação' },
   { value: 98, suffix: '%', label: 'De clientes que retornam' },
 ];
@@ -116,9 +116,9 @@ const METRICS = [
 const SISTEMAS = [
   {
     n: '01',
-    title: 'Structural Glazing',
+    title: 'Fachada Ventilada',
     tag: 'Estrutural · Vidro fixado por estrutura',
-    desc: 'Vidros fixados por perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
+    desc: 'Vidros fixados em perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
     bullets: ['Vãos até 3,5 m', 'Câmara de isolamento', 'Vidro laminado 10mm'],
     icon: Layers,
     img: '/obras-curated/varanda-vidro-branca.jpeg',
@@ -128,13 +128,13 @@ const SISTEMAS = [
     title: 'Linha Perfecta Plus 3.5',
     tag: '3,5 mm · Performance térmica',
     desc: 'Sistema de esquadria de alto desempenho com câmara européia de isolamento térmico e acústico. Perfil mínimo para máxima transparência.',
-    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Amortece 100%'],
+    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Isolamento Acústico'],
     icon: Wind,
     img: '/obras-curated/casa-minimalista-janelas.jpeg',
   },
   {
     n: '03',
-    title: 'Fachada Ventilada',
+    title: 'Structural Glazing',
     tag: 'Curtain wall · Performance',
     desc: 'Sistema de fachada contínua com perfilhagem oculta. Estanqueidade, desempenho termoacústico e drenagem controlada.',
     bullets: ['Perfilhagem oculta', 'Drenagem controlada', 'Edifícios corporativos'],
@@ -163,7 +163,7 @@ const SISTEMAS = [
     n: '06',
     title: 'Manutenção & Pós-Venda',
     tag: 'Garantia · Equipe em campo 48h',
-    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h em qualquer ponto do Brasil.',
+    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h.',
     bullets: ['Vistoria 12º mês', '48h no campo', 'Equipe própria'],
     icon: Wrench,
     img: '/obras-curated/predio-fachada-vidro-concreto.jpeg',
