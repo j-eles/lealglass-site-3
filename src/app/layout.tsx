@@ -301,11 +301,11 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}
     >
       <head>
-        {/* Preload hero image (LCP element) — highest priority */}
+        {/* Preload hero video — carrega o mais cedo possível */}
         <link
           rel="preload"
-          as="image"
-          href="/obras-curated/hero-casa-vidro.jpeg"
+          as="video"
+          href="/video-hero-2.mp4"
           fetchPriority="high"
         />
         {/* PWA manifest — instalável no Android/iOS */}

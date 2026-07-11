@@ -674,26 +674,17 @@ export default function Home() {
           aria-label="Apresentação"
           className="relative min-h-[100svh] flex items-end overflow-hidden pt-32 pb-16"
         >
-          {/* Background video — visible on all viewports. Poster image loads first (LCP), then video autoplays. */}
+          {/* Background video — plays once and stops on last frame. No poster, no fallback image. */}
           <div className="absolute inset-0 z-0" aria-hidden="true">
             <video
               autoPlay
               muted
-              loop
               playsInline
               preload="auto"
-              poster="/obras-curated/hero-casa-vidro.jpeg"
               className="w-full h-full object-cover object-center"
             >
               <source src="/video-hero-2.mp4" type="video/mp4" />
               <source src="/video_hero.webm" type="video/webm" />
-              {/* Fallback for browsers without video support */}
-              <img
-                src="/obras-curated/hero-casa-vidro.jpeg"
-                alt=""
-                role="presentation"
-                className="w-full h-full object-cover object-center"
-              />
             </video>
             <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
             <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/20" />
