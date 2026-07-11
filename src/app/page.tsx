@@ -97,18 +97,18 @@ const TRUST_ITEMS = [
   { icon: Star, text: 'Nota 5.0 no Google · 127 avaliações' },
   { icon: FileCheck, text: 'ART inclusa em todo contrato' },
   { icon: BookCheck, text: 'NBR 10821 · 15575 · 15928' },
-  { icon: Users, text: '500+ obras entregues no prazo' },
+  { icon: Users, text: '200+ obras entregues no prazo' },
 ];
 
 const HERO_STATS = [
-  { value: '500+', label: 'Obras entregues' },
+  { value: '200+', label: 'Obras entregues' },
   { value: '98%', label: 'Dentro do prazo' },
-  { value: 'R$ 0', label: 'Custo de retrabalho faturado em 2024' },
+  { value: 'R$ 0', label: 'Custo de retrabalho faturado em 2025' },
 ];
 
 const METRICS = [
-  { value: 500, suffix: '+', label: 'Obras entregues em Curitiba e região' },
-  { value: 42, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
+  { value: 200, suffix: '+', label: 'Obras entregues em Curitiba e região' },
+  { value: 15, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
   { value: 5, suffix: ' anos', label: 'De garantia em estrutura e vedação' },
   { value: 98, suffix: '%', label: 'De clientes que retornam' },
 ];
@@ -116,30 +116,30 @@ const METRICS = [
 const SISTEMAS = [
   {
     n: '01',
-    title: 'Structural Glazing',
+    title: 'Fachada Ventilada',
     tag: 'Estrutural · Vidro fixado por estrutura',
-    desc: 'Vidros fixados por perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
+    desc: 'Vidros fixados em perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
     bullets: ['Vãos até 3,5 m', 'Câmara de isolamento', 'Vidro laminado 10mm'],
     icon: Layers,
-    img: '/obras-curated/varanda-vidro-branca.jpeg',
+    img: '/obras-curated-v2/sacada1.jpg',
   },
   {
     n: '02',
     title: 'Linha Perfecta Plus 3.5',
     tag: '3,5 mm · Performance térmica',
     desc: 'Sistema de esquadria de alto desempenho com câmara européia de isolamento térmico e acústico. Perfil mínimo para máxima transparência.',
-    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Amortece 100%'],
+    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Isolamento Acústico'],
     icon: Wind,
-    img: '/obras-curated/casa-minimalista-janelas.jpeg',
+    img: '/obras-curated-v2/cobertura.jpg',
   },
   {
     n: '03',
-    title: 'Fachada Ventilada',
+    title: 'Structural Glazing',
     tag: 'Curtain wall · Performance',
     desc: 'Sistema de fachada contínua com perfilhagem oculta. Estanqueidade, desempenho termoacústico e drenagem controlada.',
     bullets: ['Perfilhagem oculta', 'Drenagem controlada', 'Edifícios corporativos'],
     icon: Building2,
-    img: '/obras-curated/predio-comercial-vidro.jpeg',
+    img: '/obras-curated-v2/fachada3.jpg',
   },
   {
     n: '04',
@@ -148,7 +148,7 @@ const SISTEMAS = [
     desc: 'Guarda-corpos em vidro laminado temperado com fixação por pinos ou perfil embutido. Atende à NBR 14718 para cargas horizontais.',
     bullets: ['Laminado temperado', 'NBR 14718', 'Fixação embutida'],
     icon: GlassWater,
-    img: '/obras-curated/varanda-vidro-mar.jpeg',
+    img: '/obras-curated-v2/fachada13.jpg',
   },
   {
     n: '05',
@@ -157,84 +157,84 @@ const SISTEMAS = [
     desc: 'Janelas, portas e painéis projetados para a arquitetura específica de cada obra. Maximização de ventilação e integração visual.',
     bullets: ['Projeto por obra', 'Max-ventilação', 'Integração visual'],
     icon: Square,
-    img: '/obras-curated/residencial-nice-vidros-azul.jpeg',
+    img: '/obras-curated-v2/fachada5.jpg',
   },
   {
     n: '06',
     title: 'Manutenção & Pós-Venda',
     tag: 'Garantia · Equipe em campo 48h',
-    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h em qualquer ponto do Brasil.',
+    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h.',
     bullets: ['Vistoria 12º mês', '48h no campo', 'Equipe própria'],
     icon: Wrench,
-    img: '/obras-curated/predio-fachada-vidro-concreto.jpeg',
+    img: '/obras-curated-v2/fachada14.jpg',
   },
 ];
 
 const OBRAS = [
   {
-    name: 'Residência Casa de Vidro',
+    name: 'Residência de Alto Padrão',
     city: 'Curitiba, PR',
     area: '420 m²',
     system: 'Structural Glazing',
     year: '2024',
-    desc: 'Casa moderna com estrutura de vidro e alumínio. Vãos amplos com máxima transparência e integração visual com a área externa.',
-    tags: ['Structural Glazing', 'Vidro temperado', 'Vãos amplos'],
-    img: '/obras-curated/varanda-vidro-branca.jpeg',
+    desc: 'Casa moderna com fachada em concreto e esquadrias de vidro estrutural. Vãos amplos com máxima transparência e integração visual.',
+    tags: ['Structural Glazing', 'Vidro estrutural', 'Concreto aparente'],
+    img: '/obras-curated-v2/fachada17.png',
     span: 'lg:col-span-2 lg:row-span-2',
   },
   {
-    name: 'Edifício Residencial Nice',
+    name: 'Residência Varanda Vidro',
     city: 'Curitiba, PR',
-    area: '4.200 m²',
-    system: 'Fachada Contínua',
+    area: '380 m²',
+    system: 'Esquadrias Sob Medida',
     year: '2024',
-    desc: 'Edifício residencial com fachada de vidros azuis e estrutura de alumínio. 84 unidades entregues em prédio habitado.',
-    tags: ['Fachada contínua', '84 unidades', 'Vidros azuis'],
-    img: '/obras-curated/residencial-nice-vidros-azul.jpeg',
+    desc: 'Fachada moderna com esquadrias de alumínio e vidro em casa de concreto. Integração total entre interior e exterior.',
+    tags: ['Alumínio + vidro', 'Concreto', 'Integração visual'],
+    img: '/obras-curated-v2/varanda-vidro-branca.png',
     span: '',
   },
   {
-    name: 'Edifício Comercial',
+    name: 'Edifício Balcões Vidro',
     city: 'Curitiba, PR',
     area: '3.600 m²',
     system: 'Fachada Ventilada',
     year: '2024',
-    desc: 'Edifício comercial com fachada de vidros e estrutura metálica. Curtain wall com perfilhagem oculta e drenagem controlada.',
-    tags: ['Curtain wall', 'Perfilhagem oculta', 'Estrutura metálica'],
-    img: '/obras-curated/predio-comercial-vidro.jpeg',
+    desc: 'Fachada de edifício com esquadrias de vidro em balcões. Iluminação dourada de entardecer realça a arquitetura.',
+    tags: ['Balcões', 'Curtain wall', 'Iluminação dourada'],
+    img: '/obras-curated-v2/fachada8.jpg',
     span: '',
   },
   {
-    name: 'Edifício Fachada Mixta',
+    name: 'Detalhe Fachada Dourada',
     city: 'Curitiba, PR',
-    area: '5.200 m²',
+    area: '—',
     system: 'Structural Glazing',
-    year: '2023',
-    desc: 'Prédio alto com fachada de vidro e concreto. Composição arquitetônica premium com esquadrias de alto desempenho térmico.',
-    tags: ['Vidro + concreto', 'Alto desempenho', 'Premium'],
-    img: '/obras-curated/predio-fachada-vidro-concreto.jpeg',
+    year: '2024',
+    desc: 'Detalhe de fachada com perfis dourados e vidro azul. Iluminação lateral cria reflexos premium no curtain wall.',
+    tags: ['Perfis dourados', 'Vidro azul', 'Curtain wall'],
+    img: '/obras-curated-v2/fachada2.png',
     span: '',
   },
   {
-    name: 'Residência Minimalista',
+    name: 'Edifício Industrial',
+    city: 'São José dos Pinhais, PR',
+    area: '2.400 m²',
+    system: 'Fachada Industrial',
+    year: '2023',
+    desc: 'Prédio industrial com fachada em painéis metálicos e grandes vãos de vidro. Atende NBR 15928 e NBR 15575.',
+    tags: ['Industrial', 'Painéis metálicos', 'Grandes vãos'],
+    img: '/obras-curated-v2/fachada16.jpg',
+    span: 'lg:col-span-2',
+  },
+  {
+    name: 'Residência Esquadrias',
     city: 'Campina Grande do Sul, PR',
     area: '320 m²',
     system: 'Esquadrias Sob Medida',
     year: '2024',
-    desc: 'Casa minimalista com grandes janelas e integração visual total. Perfil mínimo para máxima transparência.',
-    tags: ['Minimalista', 'Grandes janelas', 'Perfil mínimo'],
-    img: '/obras-curated/casa-minimalista-janelas.jpeg',
-    span: 'lg:col-span-2',
-  },
-  {
-    name: 'Galpão Industrial',
-    city: 'São José dos Pinhais, PR',
-    area: '1.800 m²',
-    system: 'Fachada Industrial',
-    year: '2023',
-    desc: 'Fachada industrial com vidros de grande formato e estrutura metálica. Atende NBR 15928 e NBR 15575.',
-    tags: ['Industrial', 'NBR 15928', 'Vidros grandes'],
-    img: '/obras-curated/fachada-industrial-vidros.jpeg',
+    desc: 'Fachada de casa com esquadrias de alumínio e vidro estrutural em varanda. Perfil mínimo para máxima transparência.',
+    tags: ['Alumínio', 'Vidro estrutural', 'Varanda'],
+    img: '/obras-curated-v2/esquadias.jpg',
     span: '',
   },
 ];
@@ -303,13 +303,13 @@ const AUTORIDADE = [
 const DEPOIMENTOS = [
   {
     quote:
-      'Entregaram 2.400 m² de esquadrias no prazo exato de 65 dias. Zero retrabalho. Isso nunca havia acontecido em 12 anos de obra.',
+      'Entregaram 800 m² de esquadrias no prazo exato de 65 dias. Zero retrabalho. Isso nunca havia acontecido em 12 anos de obra.',
     result: 'R$ 180 mil em retrabalhos evitados',
     initials: 'RM',
     name: 'Ricardo Mendes',
     role: 'Diretor de Obras',
     company: 'Construtora Vertis',
-    obra: 'Edifício Varandas Azul · 3.600 m²',
+    obra: 'Edifício Varandas Azul · 204 unidades',
   },
   {
     quote:
@@ -340,7 +340,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'A Leal Glass emite ART para todos os projetos?',
-    a: 'Sim. Todos os projetos possuem ART (Anotação de Responsabilidade Técnica) registrada no CREA-PR, assinada por engenheiro responsável do nosso quadro. A ART de projeto e execução está inclusa em todo contrato, sem custo adicional.',
+    a: 'Sim. Todos os projetos possuem ART (Anotação de Responsabilidade Técnica) registrada no CREA-PR, assinada por engenheiro responsável do nosso quadro. A ART de projeto e execução está inclusa em todo contrato.',
   },
   {
     q: 'Quais normas ABNT as esquadrias atendem?',
@@ -348,7 +348,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Qual a garantia oferecida pela Leal Glass?',
-    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato. Cobre mão de obra e peças.',
+    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
   },
   {
     q: 'Vocês atendem fora de Curitiba?',
@@ -701,16 +701,27 @@ export default function Home() {
           aria-label="Apresentação"
           className="relative min-h-[100svh] flex items-end overflow-hidden pt-32 pb-16"
         >
-          {/* Background image — decorative, static for performance and reliability */}
+          {/* Background video — visible on all viewports. Poster image loads first (LCP), then video autoplays. */}
           <div className="absolute inset-0 z-0" aria-hidden="true">
-            <img
-              src="/obras-curated/hero-casa-vidro.jpeg"
-              alt=""
-              role="presentation"
-              fetchPriority="high"
-              decoding="async"
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="auto"
+              poster="/obras-curated/hero-casa-vidro.jpeg"
               className="w-full h-full object-cover object-center"
-            />
+            >
+              <source src="/video_hero.mp4" type="video/mp4" />
+              <source src="/video_hero.webm" type="video/webm" />
+              {/* Fallback for browsers without video support */}
+              <img
+                src="/obras-curated/hero-casa-vidro.jpeg"
+                alt=""
+                role="presentation"
+                className="w-full h-full object-cover object-center"
+              />
+            </video>
             <div className="absolute inset-0 bg-gradient-to-b from-background/75 via-background/45 to-background" />
             <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
           </div>
@@ -727,7 +738,7 @@ export default function Home() {
               <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 bg-gold-dim border border-gold-border rounded-full">
                 <span className="badge-dot w-1.5 h-1.5 rounded-full bg-gold" />
                 <span className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold-light">
-                  Próxima janela de instalação: fevereiro 2026
+                  Próxima janela de instalação: novembro 2026
                 </span>
               </div>
 
