@@ -12,14 +12,46 @@ datasource db {
 
 /// Lead capturado pelo formulário de orçamento do site.
 model Lead {
+  id           String   @id @default(cuid())
+  name         String
+  company      String?
+  phone        String
+  email        String?
+  project      String?
+  message      String?
+  source       String   @default("website")
+  status       String   @default("new") // new | read | contacted | done
+  assignedTo   String?  // email do admin que está atendendo
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  readAt       DateTime?
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+/// Usuário administrador que acessa a área /admin/pedidos.
+/// Até 4 usuários (equipe de vendas Leal Glass).
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String   // argon2/bcrypt-style hash (aqui usamos sha-256 + salt para simplicidade)
+  role         String   @default("admin") // admin | super
+  createdAt    DateTime @default(now())
+  lastLoginAt  DateTime?
+}
+
+/// Token FCM de cada dispositivo instalado (PWA no Android/iOS dos 4 admins).
+/// Um admin pode ter múltiplos dispositivos (celular + tablet, etc).
+model DeviceToken {
   id        String   @id @default(cuid())
-  name      String
-  company   String?
-  phone     String
-  email     String?
-  project   String?
-  message   String?
-  source    String   @default("website")
-  status    String   @default("new")
+  token     String   @unique
+  userEmail String   // referência fraca para AdminUser.email
+  userAgent String?
   createdAt DateTime @default(now())
+  lastUsedAt DateTime?
+  active    Boolean  @default(true)
+
+  @@index([userEmail])
 }

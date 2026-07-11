@@ -1,0 +1,65 @@
+{
+  "name": "Leal Glass · Pedidos",
+  "short_name": "Pedidos LG",
+  "description": "Central de pedidos de orçamento da Leal Glass — receive push notifications quando um novo lead chegar pelo site.",
+  "id": "/?source=pwa",
+  "start_url": "/admin/pedidos?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#07080C",
+  "theme_color": "#07080C",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-retina.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-retina.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/logo-retina.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ver pedidos",
+      "short_name": "Pedidos",
+      "description": "Lista de pedidos de orçamento recebidos",
+      "url": "/admin/pedidos",
+      "icons": [{ "src": "/favicon.png", "sizes": "32x32" }]
+    },
+    {
+      "name": "Novos pedidos",
+      "short_name": "Novos",
+      "description": "Filtrar apenas pedidos não atendidos",
+      "url": "/admin/pedidos?status=new"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/obras-curated/hero-casa-vidro.jpeg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "form_factor": "wide",
+      "label": "Tela de pedidos da Leal Glass"
+    }
+  ]
+}

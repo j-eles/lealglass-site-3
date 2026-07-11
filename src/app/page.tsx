@@ -91,6 +91,7 @@ const NAV_LINKS = [
   { label: 'Diferenciais', href: '#diferenciais' },
   { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Privacidade', href: '/politica-de-privacidade' },
 ];
 
 const TRUST_ITEMS = [
@@ -119,23 +120,23 @@ const SISTEMAS = [
   {
     n: '01',
     categoria: 'Residências de Alto Padrão',
-    sistema: 'Esquadrias Sob Medida · Structural Glazing',
+    sistema: 'Esquadrias Sob Medida · Alumínio e PVC',
     frases: ['Grandes vãos.', 'Precisão estrutural.', 'Máxima transparência.'],
     img: '/obras-curated-v2/varanda-vidro-branca.png',
   },
   {
     n: '02',
     categoria: 'Edifícios Corporativos',
-    sistema: 'Fachada Ventilada · Curtain Wall',
-    frases: ['Perfilhagem oculta.', 'Desempenho termoacústico.', 'Escala vertical.'],
+    sistema: 'Pele de Vidro · Curtain Wall',
+    frases: ['Perfis minimalistas.', 'Desempenho termoacústico.', 'Escala vertical.'],
     img: '/obras-curated-v2/fachada3.jpg',
   },
   {
     n: '03',
     categoria: 'Grandes Vãos',
     sistema: 'Structural Glazing · Vidro Estrutural',
-    frases: ['Vãos acima de 3 metros.', 'Zero deflexão.', 'Luz sem interrupção.'],
-    img: '/obras-curated-v2/cobertura.jpg',
+    frases: ['Vãos acima de 3 metros.', 'Perfilagem oculta.', 'Luz sem interrupção.'],
+    img: '/obras-curated-v2/hospital-sao-vicente-araucaria.png',
   },
   {
     n: '04',
@@ -149,12 +150,12 @@ const SISTEMAS = [
     categoria: 'Fachadas de Vidro',
     sistema: 'Guarda-Corpos · Fachada Contínua',
     frases: ['Vidro laminado temperado.', 'Segurança NBR 14718.', 'Continuidade visual.'],
-    img: '/obras-curated-v2/fachada13.jpg',
+    img: '/obras-curated-v2/guarda-corpo.jpg',
   },
   {
     n: '06',
-    categoria: 'Espaços Industriais',
-    sistema: 'Fachada Industrial · Vedação Técnica',
+    categoria: 'Espaços Comerciais',
+    sistema: 'Fachada Comercial · Vedação Técnica',
     frases: ['Vidros de grande formato.', 'Estrutura metálica.', 'Durabilidade NBR 15928.'],
     img: '/obras-curated-v2/fachada16.jpg',
   },
@@ -162,69 +163,51 @@ const SISTEMAS = [
 
 const OBRAS = [
   {
-    name: 'Residência de Alto Padrão',
-    city: 'Curitiba, PR',
-    area: '420 m²',
-    system: 'Structural Glazing',
-    year: '2024',
-    desc: 'Casa moderna com fachada em concreto e esquadrias de vidro estrutural. Vãos amplos com máxima transparência e integração visual.',
-    tags: ['Structural Glazing', 'Vidro estrutural', 'Concreto aparente'],
-    img: '/obras-curated-v2/fachada17.png',
+    name: 'Edifício Marbella',
+    city: 'Caiobá, PR',
+    img: '/obras-curated-v2/edificio-marbella-caioba-pr.png',
     span: 'lg:col-span-2 lg:row-span-2',
   },
   {
-    name: 'Residência Varanda Vidro',
-    city: 'Curitiba, PR',
-    area: '380 m²',
-    system: 'Esquadrias Sob Medida',
-    year: '2024',
-    desc: 'Fachada moderna com esquadrias de alumínio e vidro em casa de concreto. Integração total entre interior e exterior.',
-    tags: ['Alumínio + vidro', 'Concreto', 'Integração visual'],
-    img: '/obras-curated-v2/varanda-vidro-branca.png',
+    name: 'Residência Alphaville',
+    city: 'Barueri, SP',
+    img: '/obras-curated-v2/residencia-alphaville-barueri-sp.png',
     span: '',
   },
   {
-    name: 'Edifício Balcões Vidro',
-    city: 'Curitiba, PR',
-    area: '3.600 m²',
-    system: 'Fachada Ventilada',
-    year: '2024',
-    desc: 'Fachada de edifício com esquadrias de vidro em balcões. Iluminação dourada de entardecer realça a arquitetura.',
-    tags: ['Balcões', 'Curtain wall', 'Iluminação dourada'],
-    img: '/obras-curated-v2/fachada8.jpg',
+    name: 'Nichele Unidade',
+    city: 'Araucária, PR',
+    img: '/obras-curated-v2/nichele-unidade-araucaria-pr.jpg',
     span: '',
   },
   {
-    name: 'Detalhe Fachada Dourada',
+    name: 'Residência Alphaville',
     city: 'Curitiba, PR',
-    area: '—',
-    system: 'Structural Glazing',
-    year: '2024',
-    desc: 'Detalhe de fachada com perfis dourados e vidro azul. Iluminação lateral cria reflexos premium no curtain wall.',
-    tags: ['Perfis dourados', 'Vidro azul', 'Curtain wall'],
-    img: '/obras-curated-v2/fachada2.png',
+    img: '/obras-curated-v2/residencia-alphaville-curitiba-pr.jpg',
     span: '',
   },
   {
-    name: 'Edifício Industrial',
-    city: 'São José dos Pinhais, PR',
-    area: '2.400 m²',
-    system: 'Fachada Industrial',
-    year: '2023',
-    desc: 'Prédio industrial com fachada em painéis metálicos e grandes vãos de vidro. Atende NBR 15928 e NBR 15575.',
-    tags: ['Industrial', 'Painéis metálicos', 'Grandes vãos'],
-    img: '/obras-curated-v2/fachada16.jpg',
+    name: 'Residencial Nice',
+    city: 'Caiobá, PR',
+    img: '/obras-curated-v2/residencial-nice-caioba-pr.png',
     span: 'lg:col-span-2',
   },
   {
-    name: 'Residência Esquadrias',
-    city: 'Campina Grande do Sul, PR',
-    area: '320 m²',
-    system: 'Esquadrias Sob Medida',
-    year: '2024',
-    desc: 'Fachada de casa com esquadrias de alumínio e vidro estrutural em varanda. Perfil mínimo para máxima transparência.',
-    tags: ['Alumínio', 'Vidro estrutural', 'Varanda'],
-    img: '/obras-curated-v2/esquadias.jpg',
+    name: 'Shopping Pinheirinho Mall',
+    city: 'Curitiba, PR',
+    img: '/obras-curated-v2/shopping-pinheirinho-mall-curitiba-pr.jpg',
+    span: '',
+  },
+  {
+    name: 'Hospital São Vicente',
+    city: 'Araucária, PR',
+    img: '/obras-curated-v2/hospital-sao-vicente-araucaria-pr.png',
+    span: '',
+  },
+  {
+    name: 'Shopping MK',
+    city: 'Caiobá, PR',
+    img: '/obras-curated-v2/shopping-mk-caioba-pr.jpg',
     span: '',
   },
 ];
@@ -338,7 +321,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Qual a garantia oferecida pela Leal Glass?',
-    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
+    a: '5 anos de garantia em estrutura e vedação. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
   },
   {
     q: 'Vocês atendem fora de Curitiba?',
@@ -354,7 +337,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-const WHATSAPP_NUMBER = '5541998512093';
+const WHATSAPP_NUMBER = '5541998612093';
 const PHONE_LANDLINE = '+554130570873';
 const WHATSAPP_MSG =
   'Olá! Vim pelo site e gostaria de solicitar um diagnóstico técnico gratuito para o meu empreendimento.';
@@ -702,7 +685,7 @@ export default function Home() {
               poster="/obras-curated/hero-casa-vidro.jpeg"
               className="w-full h-full object-cover object-center"
             >
-              <source src="/video_hero.mp4" type="video/mp4" />
+              <source src="/video-hero-2.mp4" type="video/mp4" />
               <source src="/video_hero.webm" type="video/webm" />
               {/* Fallback for browsers without video support */}
               <img
@@ -991,40 +974,17 @@ export default function Home() {
                   >
                     <img
                       src={o.img}
-                      alt={`${o.name} — ${o.system} executada pela Leal Glass em ${o.city}`}
+                      alt={`${o.name} — ${o.city}`}
                       loading="lazy"
                       className="gallery-img w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                     <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <div className="gallery-overlay mb-3">
-                        <p className="text-[0.85rem] text-foreground/90 leading-relaxed mb-3">
-                          {o.desc}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {o.tags.map((t) => (
-                            <span
-                              key={t}
-                              className="px-2.5 py-1 bg-white/[0.06] border border-white/[0.08] rounded-full text-[0.65rem] text-muted-brand"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
                       <h3 className="font-display text-xl text-foreground tracking-tight mb-1">
                         {o.name}
                       </h3>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.72rem] text-muted-brand">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" /> {o.city}
-                        </span>
-                        <span>·</span>
-                        <span>{o.area}</span>
-                        <span>·</span>
-                        <span className="text-gold">{o.system}</span>
-                        <span>·</span>
-                        <span>{o.year}</span>
+                      <div className="flex items-center gap-1.5 text-[0.72rem] text-muted-brand">
+                        <MapPin className="w-3 h-3 text-gold" /> {o.city}
                       </div>
                     </div>
                   </button>
@@ -1671,8 +1631,8 @@ export default function Home() {
               </h4>
               <ul className="space-y-2.5">
                 <li>
-                  <a href="https://wa.me/5541998512093" target="_blank" rel="noopener noreferrer" className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2">
-                    <MessageCircle className="w-3.5 h-3.5 text-gold" /> (41) 99851-2093
+                  <a href="https://wa.me/5541998612093" target="_blank" rel="noopener noreferrer" className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2">
+                    <MessageCircle className="w-3.5 h-3.5 text-gold" /> (41) 99861-2093
                   </a>
                 </li>
                 <li>
@@ -1869,21 +1829,15 @@ export default function Home() {
             >
               <img
                 src={OBRAS[lightbox].img}
-                alt={`${OBRAS[lightbox].name} — ${OBRAS[lightbox].system} em ${OBRAS[lightbox].city}`}
+                alt={`${OBRAS[lightbox].name} — ${OBRAS[lightbox].city}`}
                 className="w-full max-h-[68vh] object-contain rounded-lg"
               />
               <div className="mt-6 text-center">
                 <h3 className="font-display text-2xl mb-2 tracking-tight">
                   {OBRAS[lightbox].name}
                 </h3>
-                <p className="text-muted-brand text-[0.92rem] max-w-[600px] mx-auto leading-relaxed mb-3">
-                  {OBRAS[lightbox].desc}
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[0.78rem] text-muted-brand">
-                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {OBRAS[lightbox].city}</span>
-                  <span>·</span><span>{OBRAS[lightbox].area}</span>
-                  <span>·</span><span className="text-gold">{OBRAS[lightbox].system}</span>
-                  <span>·</span><span>{OBRAS[lightbox].year}</span>
+                <div className="flex items-center justify-center gap-1.5 text-[0.82rem] text-muted-brand">
+                  <MapPin className="w-3.5 h-3.5 text-gold" /> {OBRAS[lightbox].city}
                 </div>
               </div>
             </motion.div>

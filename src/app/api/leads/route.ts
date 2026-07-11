@@ -113,8 +113,9 @@ export async function POST(request: NextRequest) {
     };
 
     // ── Persistência (Turso/SQLite via libsql) ──
+    let savedLead: { id: string; name: string; company: string | null; phone: string; project: string | null } | null = null;
     try {
-      await createLead({
+      savedLead = await createLead({
         name: lead.name,
         company: lead.company,
         phone: lead.phone,
@@ -129,6 +130,20 @@ export async function POST(request: NextRequest) {
     }
 
     console.log("[LEAD]", JSON.stringify(lead));
+
+    // ════════════════════════════════════════════
+    // PUSH NOTIFICATION via Firebase Cloud Messaging
+    // Dispara para todos os device tokens ativos dos admins
+    // ════════════════════════════════════════════
+    if (savedLead) {
+      try {
+        const { notifyNewLead } = await import('@/lib/firebase-admin');
+        await notifyNewLead(savedLead);
+      } catch (pushErr) {
+        // Não falha o request se o push falhar — lead já foi salvo
+        console.error("[LEADS] push error:", pushErr);
+      }
+    }
 
     // ════════════════════════════════════════════
     // WEBHOOK — n8n / Make / Zapier
