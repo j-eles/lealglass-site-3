@@ -113,60 +113,50 @@ const METRICS = [
   { value: 98, suffix: '%', label: 'De clientes que retornam' },
 ];
 
+// Sistemas organizados por CATEGORIA ARQUITETÔNICA (jornada do cliente), não por sistema técnico.
+// Texto minimalista — imagem vende mais que ficha técnica.
 const SISTEMAS = [
   {
     n: '01',
-    title: 'Fachada Ventilada',
-    tag: 'Estrutural · Vidro fixado por estrutura',
-    desc: 'Vidros fixados em perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
-    bullets: ['Vãos até 3,5 m', 'Câmara de isolamento', 'Vidro laminado 10mm'],
-    icon: Layers,
-    img: '/obras-curated-v2/sacada1.jpg',
+    categoria: 'Residências de Alto Padrão',
+    sistema: 'Esquadrias Sob Medida · Structural Glazing',
+    frases: ['Grandes vãos.', 'Precisão estrutural.', 'Máxima transparência.'],
+    img: '/obras-curated-v2/varanda-vidro-branca.png',
   },
   {
     n: '02',
-    title: 'Linha Perfecta Plus 3.5',
-    tag: '3,5 mm · Performance térmica',
-    desc: 'Sistema de esquadria de alto desempenho com câmara européia de isolamento térmico e acústico. Perfil mínimo para máxima transparência.',
-    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Isolamento Acústico'],
-    icon: Wind,
-    img: '/obras-curated-v2/cobertura.jpg',
-  },
-  {
-    n: '03',
-    title: 'Structural Glazing',
-    tag: 'Curtain wall · Performance',
-    desc: 'Sistema de fachada contínua com perfilhagem oculta. Estanqueidade, desempenho termoacústico e drenagem controlada.',
-    bullets: ['Perfilhagem oculta', 'Drenagem controlada', 'Edifícios corporativos'],
-    icon: Building2,
+    categoria: 'Edifícios Corporativos',
+    sistema: 'Fachada Ventilada · Curtain Wall',
+    frases: ['Perfilhagem oculta.', 'Desempenho termoacústico.', 'Escala vertical.'],
     img: '/obras-curated-v2/fachada3.jpg',
   },
   {
+    n: '03',
+    categoria: 'Grandes Vãos',
+    sistema: 'Structural Glazing · Vidro Estrutural',
+    frases: ['Vãos acima de 3 metros.', 'Zero deflexão.', 'Luz sem interrupção.'],
+    img: '/obras-curated-v2/cobertura.jpg',
+  },
+  {
     n: '04',
-    title: 'Guarda-Corpos de Vidro',
-    tag: 'Bordas · Segurança NBR 14718',
-    desc: 'Guarda-corpos em vidro laminado temperado com fixação por pinos ou perfil embutido. Atende à NBR 14718 para cargas horizontais.',
-    bullets: ['Laminado temperado', 'NBR 14718', 'Fixação embutida'],
-    icon: GlassWater,
-    img: '/obras-curated-v2/fachada13.jpg',
+    categoria: 'Minimal Frame',
+    sistema: 'Linha Perfecta Plus 3.5',
+    frases: ['Perfil de 3,5 mm.', 'Isolamento térmico.', 'A arquitetura aparece.'],
+    img: '/obras-curated-v2/fachada2.png',
   },
   {
     n: '05',
-    title: 'Esquadrias Sob Medida',
-    tag: 'Personalizada · Arquitetura',
-    desc: 'Janelas, portas e painéis projetados para a arquitetura específica de cada obra. Maximização de ventilação e integração visual.',
-    bullets: ['Projeto por obra', 'Max-ventilação', 'Integração visual'],
-    icon: Square,
-    img: '/obras-curated-v2/fachada5.jpg',
+    categoria: 'Fachadas de Vidro',
+    sistema: 'Guarda-Corpos · Fachada Contínua',
+    frases: ['Vidro laminado temperado.', 'Segurança NBR 14718.', 'Continuidade visual.'],
+    img: '/obras-curated-v2/fachada13.jpg',
   },
   {
     n: '06',
-    title: 'Manutenção & Pós-Venda',
-    tag: 'Garantia · Equipe em campo 48h',
-    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h.',
-    bullets: ['Vistoria 12º mês', '48h no campo', 'Equipe própria'],
-    icon: Wrench,
-    img: '/obras-curated-v2/fachada14.jpg',
+    categoria: 'Espaços Industriais',
+    sistema: 'Fachada Industrial · Vedação Técnica',
+    frases: ['Vidros de grande formato.', 'Estrutura metálica.', 'Durabilidade NBR 15928.'],
+    img: '/obras-curated-v2/fachada16.jpg',
   },
 ];
 
@@ -722,8 +712,8 @@ export default function Home() {
                 className="w-full h-full object-cover object-center"
               />
             </video>
-            <div className="absolute inset-0 bg-gradient-to-b from-background/75 via-background/45 to-background" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/20" />
           </div>
 
           {/* Content */}
@@ -845,11 +835,11 @@ export default function Home() {
                   viewport={{ once: true, margin: '-25% 0px -25% 0px' }}
                   transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
                 >
-                  <div className="font-display text-[clamp(3.5rem,12vw,9rem)] leading-[0.9] tracking-tight text-foreground mb-5">
+                  <div className="font-display text-[clamp(4rem,15vw,12rem)] leading-[0.85] tracking-tight text-foreground mb-8">
                     <CountUp target={m.value} inView={metricsInView} />
                     <span className="text-gold">{m.suffix}</span>
                   </div>
-                  <p className="text-[clamp(0.95rem,1.8vw,1.3rem)] text-muted-brand leading-snug max-w-[480px] mx-auto">
+                  <p className="text-[clamp(0.7rem,1.2vw,0.9rem)] text-gold font-mono-brand uppercase tracking-[0.3em] max-w-[480px] mx-auto">
                     {m.label}
                   </p>
                 </motion.div>
@@ -876,40 +866,40 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══ SISTEMAS — full-screen image panels, scroll-triggered (no sticky overlap) ═══ */}
+        {/* ═══ SISTEMAS — organizados por categoria arquitetônica (jornada do cliente) ═══ */}
         <section
           id="sistemas"
           aria-labelledby="sistemas-title"
         >
           {/* Section intro */}
-          <div className="max-w-[1280px] mx-auto px-6 lg:px-10 pt-24 pb-12">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-10 pt-32 pb-16">
             <Reveal className="max-w-[680px]">
-              <span className="eyebrow mb-5">Sistemas &amp; Produtos</span>
+              <span className="eyebrow mb-5">Soluções por categoria</span>
               <h2
                 id="sistemas-title"
-                className="font-display text-[clamp(1.9rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-5"
+                className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] tracking-tight mb-6"
               >
-                Cada sistema, uma{' '}
-                <span className="text-gold italic">decisão de engenharia</span>
+                A arquitetura{' '}
+                <span className="text-gold italic">define o sistema</span>
               </h2>
-              <p className="text-muted-brand text-[1rem] leading-relaxed max-w-[520px]">
-                Role para conhecer os seis sistemas que executamos — todos com
-                ART e garantia de 5 anos.
+              <p className="text-muted-brand text-[1rem] leading-relaxed max-w-[440px]">
+                Comece pelo resultado que você busca. A engenharia encontra o
+                caminho.
               </p>
             </Reveal>
           </div>
 
-          {/* Full-screen image panels — each system is a full-viewport section */}
+          {/* Full-screen image panels — cada categoria é uma tela inteira */}
           {SISTEMAS.map((s) => (
             <div
               key={s.n}
-              className="min-h-[85vh] flex items-end overflow-hidden relative"
+              className="min-h-[90vh] flex items-end overflow-hidden relative"
             >
               {/* Full-bleed background image */}
               <div className="absolute inset-0 z-0" aria-hidden="true">
                 <motion.img
                   src={s.img}
-                  alt={`${s.title} — sistema de esquadrias executado pela Leal Glass`}
+                  alt={`${s.categoria} — ${s.sistema} executado pela Leal Glass`}
                   loading="lazy"
                   initial={{ scale: 1.12, opacity: 0.3 }}
                   whileInView={{ scale: 1, opacity: 1 }}
@@ -917,38 +907,39 @@ export default function Home() {
                   transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] }}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
               </div>
 
-              {/* Text content overlay */}
-              <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-10 w-full pb-14 lg:pb-20 pt-20">
+              {/* Text content — minimalista: categoria + 3 frases curtas */}
+              <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-10 w-full pb-20 lg:pb-28 pt-24">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
                   transition={{ duration: 0.9, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="max-w-[540px]"
+                  className="max-w-[600px]"
                 >
-                  <span className="font-mono-brand text-[0.72rem] text-gold tracking-[0.2em] mb-3 block">
-                    {s.n} · {s.tag}
+                  <span className="font-mono-brand text-[0.72rem] text-gold tracking-[0.22em] mb-4 block uppercase">
+                    {s.n} · {s.sistema}
                   </span>
-                  <h3 className="font-display text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.08] tracking-tight mb-4">
-                    {s.title}
+                  <h3 className="font-display text-[clamp(2.2rem,5vw,4rem)] leading-[1.02] tracking-tight mb-7">
+                    {s.categoria}
                   </h3>
-                  <p className="text-[0.95rem] text-foreground/90 leading-relaxed mb-5 max-w-[420px]">
-                    {s.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {s.bullets.map((b) => (
-                      <span
-                        key={b}
-                        className="px-3 py-1.5 bg-gold-dim/60 border border-gold-border/40 rounded-full text-[0.72rem] text-gold-light backdrop-blur-sm"
-                      >
-                        {b}
-                      </span>
+                  <div className="space-y-2 mb-8">
+                    {s.frases.map((frase) => (
+                      <p key={frase} className="text-[clamp(1rem,1.8vw,1.3rem)] text-foreground/95 leading-snug font-light">
+                        {frase}
+                      </p>
                     ))}
                   </div>
+                  <a
+                    href="#orcamento"
+                    className="inline-flex items-center gap-2 text-[0.82rem] text-gold hover:text-gold-light transition-colors group"
+                  >
+                    Saiba mais
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" strokeWidth={1.75} />
+                  </a>
                 </motion.div>
               </div>
             </div>
@@ -958,7 +949,7 @@ export default function Home() {
         {/* ═══ PORTFÓLIO / OBRAS ═══ */}
         <section
           id="obras"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05]"
           aria-labelledby="obras-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1046,7 +1037,7 @@ export default function Home() {
         {/* ═══ DIFERENCIAIS — comparison table ═══ */}
         <section
           id="diferenciais"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05] bg-surface-3"
           aria-labelledby="dif-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1158,7 +1149,7 @@ export default function Home() {
         {/* ═══ PROCESSO ═══ */}
         <section
           id="processo"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05]"
           aria-labelledby="proc-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1221,7 +1212,7 @@ export default function Home() {
         {/* ═══ AUTORIDADE ═══ */}
         <section
           id="autoridade"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05] bg-surface-1"
           aria-labelledby="aut-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1257,7 +1248,7 @@ export default function Home() {
         {/* ═══ DEPOIMENTOS ═══ */}
         <section
           id="depoimentos"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05] bg-surface-2"
           aria-labelledby="dep-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1341,7 +1332,7 @@ export default function Home() {
         {/* ═══ FAQ ═══ */}
         <section
           id="faq"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05]"
           aria-labelledby="faq-title"
         >
           <div className="max-w-[820px] mx-auto px-6 lg:px-10">
