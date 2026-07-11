@@ -97,18 +97,18 @@ const TRUST_ITEMS = [
   { icon: Star, text: 'Nota 5.0 no Google · 127 avaliações' },
   { icon: FileCheck, text: 'ART inclusa em todo contrato' },
   { icon: BookCheck, text: 'NBR 10821 · 15575 · 15928' },
-  { icon: Users, text: '200+ obras entregues no prazo' },
+  { icon: Users, text: '500+ obras entregues no prazo' },
 ];
 
 const HERO_STATS = [
-  { value: '200+', label: 'Obras entregues' },
+  { value: '500+', label: 'Obras entregues' },
   { value: '98%', label: 'Dentro do prazo' },
-  { value: 'R$ 0', label: 'Custo de retrabalho faturado em 2025' },
+  { value: 'R$ 0', label: 'Custo de retrabalho faturado em 2024' },
 ];
 
 const METRICS = [
-  { value: 200, suffix: '+', label: 'Obras entregues em Curitiba e região' },
-  { value: 15, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
+  { value: 500, suffix: '+', label: 'Obras entregues em Curitiba e região' },
+  { value: 42, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
   { value: 5, suffix: ' anos', label: 'De garantia em estrutura e vedação' },
   { value: 98, suffix: '%', label: 'De clientes que retornam' },
 ];
@@ -116,9 +116,9 @@ const METRICS = [
 const SISTEMAS = [
   {
     n: '01',
-    title: 'Fachada Ventilada',
+    title: 'Structural Glazing',
     tag: 'Estrutural · Vidro fixado por estrutura',
-    desc: 'Vidros fixados em perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
+    desc: 'Vidros fixados por perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
     bullets: ['Vãos até 3,5 m', 'Câmara de isolamento', 'Vidro laminado 10mm'],
     icon: Layers,
     img: '/obras-curated/varanda-vidro-branca.jpeg',
@@ -128,13 +128,13 @@ const SISTEMAS = [
     title: 'Linha Perfecta Plus 3.5',
     tag: '3,5 mm · Performance térmica',
     desc: 'Sistema de esquadria de alto desempenho com câmara européia de isolamento térmico e acústico. Perfil mínimo para máxima transparência.',
-    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Isolamento Acústico'],
+    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Amortece 100%'],
     icon: Wind,
     img: '/obras-curated/casa-minimalista-janelas.jpeg',
   },
   {
     n: '03',
-    title: 'Structural Glazing',
+    title: 'Fachada Ventilada',
     tag: 'Curtain wall · Performance',
     desc: 'Sistema de fachada contínua com perfilhagem oculta. Estanqueidade, desempenho termoacústico e drenagem controlada.',
     bullets: ['Perfilhagem oculta', 'Drenagem controlada', 'Edifícios corporativos'],
@@ -163,7 +163,7 @@ const SISTEMAS = [
     n: '06',
     title: 'Manutenção & Pós-Venda',
     tag: 'Garantia · Equipe em campo 48h',
-    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h.',
+    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h em qualquer ponto do Brasil.',
     bullets: ['Vistoria 12º mês', '48h no campo', 'Equipe própria'],
     icon: Wrench,
     img: '/obras-curated/predio-fachada-vidro-concreto.jpeg',
@@ -303,13 +303,13 @@ const AUTORIDADE = [
 const DEPOIMENTOS = [
   {
     quote:
-      'Entregaram 800 m² de esquadrias no prazo exato de 65 dias. Zero retrabalho. Isso nunca havia acontecido em 12 anos de obra.',
+      'Entregaram 2.400 m² de esquadrias no prazo exato de 65 dias. Zero retrabalho. Isso nunca havia acontecido em 12 anos de obra.',
     result: 'R$ 180 mil em retrabalhos evitados',
     initials: 'RM',
     name: 'Ricardo Mendes',
     role: 'Diretor de Obras',
     company: 'Construtora Vertis',
-    obra: 'Edifício Varandas Azul · 204 unidades',
+    obra: 'Edifício Varandas Azul · 3.600 m²',
   },
   {
     quote:
@@ -340,7 +340,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'A Leal Glass emite ART para todos os projetos?',
-    a: 'Sim. Todos os projetos possuem ART (Anotação de Responsabilidade Técnica) registrada no CREA-PR, assinada por engenheiro responsável do nosso quadro. A ART de projeto e execução está inclusa em todo contrato.',
+    a: 'Sim. Todos os projetos possuem ART (Anotação de Responsabilidade Técnica) registrada no CREA-PR, assinada por engenheiro responsável do nosso quadro. A ART de projeto e execução está inclusa em todo contrato, sem custo adicional.',
   },
   {
     q: 'Quais normas ABNT as esquadrias atendem?',
@@ -348,7 +348,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Qual a garantia oferecida pela Leal Glass?',
-    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
+    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato. Cobre mão de obra e peças.',
   },
   {
     q: 'Vocês atendem fora de Curitiba?',
@@ -727,7 +727,7 @@ export default function Home() {
               <div className="inline-flex items-center gap-2.5 px-4 py-2 mb-8 bg-gold-dim border border-gold-border rounded-full">
                 <span className="badge-dot w-1.5 h-1.5 rounded-full bg-gold" />
                 <span className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold-light">
-                  Próxima janela de instalação: novembro 2026
+                  Próxima janela de instalação: fevereiro 2026
                 </span>
               </div>
 
