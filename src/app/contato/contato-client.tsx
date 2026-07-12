@@ -13,6 +13,7 @@
 
 import { useState, type FormEvent, type ChangeEvent, type DragEvent } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Phone,
   MessageCircle,
@@ -34,6 +35,17 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
+
+const NAV_LINKS = [
+  { label: 'Sistemas', href: '/#sistemas' },
+  { label: 'Obras', href: '/#obras' },
+  { label: 'Processo', href: '/#processo' },
+  { label: 'Diferenciais', href: '/#diferenciais' },
+  { label: 'Depoimentos', href: '/#depoimentos' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Contato', href: '/contato' },
+  { label: 'Privacidade', href: '/politica-de-privacidade' },
+];
 
 const PHONE_COMMERCIAL = '(41) 3057-0873';
 const PHONE_WHATSAPP = '(41) 99861-2093';
@@ -249,19 +261,91 @@ export default function ContatoClient() {
   }
 
   return (
-    <main className="min-h-[100svh] bg-background pt-32 pb-20">
-      <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
-        {/* Header */}
-        <div className="max-w-[680px] mb-14">
-          <span className="eyebrow mb-5">Fale com a Leal Glass</span>
-          <h1 className="font-display text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] tracking-tight text-foreground mb-5">
-            Entre em <span className="text-gold italic">contato</span>
-          </h1>
-          <p className="text-[1.05rem] leading-relaxed text-muted-brand">
-            Para orçamentos, parcerias, envio de documentos e desenhos técnicos
-            ou qualquer outro assunto. Respondemos em até 1 dia útil.
-          </p>
+    <>
+      {/* ─── Header fixo com navegação ─── */}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-3 group" aria-label="Leal Glass — início">
+            <Image
+              src="/logo-navbar.png"
+              alt="Logotipo Leal Glass"
+              width={40}
+              height={40}
+              className="w-10 h-10 object-contain"
+              priority
+            />
+            <span className="font-display text-xl tracking-tight text-foreground">
+              Leal <span className="text-gold italic">Glass</span>
+            </span>
+          </Link>
+
+          {/* Nav desktop */}
+          <nav className="hidden lg:flex items-center gap-6">
+            {NAV_LINKS.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`text-[0.82rem] transition-colors ${
+                  l.href === '/contato'
+                    ? 'text-gold'
+                    : 'text-muted-brand hover:text-foreground'
+                }`}
+              >
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+
+          {/* CTA + Voltar (mobile) */}
+          <div className="flex items-center gap-3">
+            <Link
+              href="/#orcamento"
+              className="hidden sm:inline-flex items-center gap-2 px-4 py-2 bg-gold text-background text-[0.78rem] font-medium rounded-md hover:bg-gold-light transition"
+            >
+              Diagnóstico gratuito
+            </Link>
+            <Link
+              href="/"
+              className="lg:hidden inline-flex items-center gap-1.5 px-3 py-2 border border-white/[0.12] text-[0.78rem] text-foreground rounded-md hover:border-white/30 transition"
+            >
+              <ArrowLeft className="w-3.5 h-3.5" />
+              Início
+            </Link>
+          </div>
         </div>
+
+        {/* Nav mobile (scroll horizontal) */}
+        <nav className="lg:hidden flex items-center gap-4 px-6 pb-3 overflow-x-auto border-t border-white/[0.04]">
+          {NAV_LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              className={`text-[0.78rem] whitespace-nowrap transition-colors ${
+                l.href === '/contato'
+                  ? 'text-gold'
+                  : 'text-muted-brand hover:text-foreground'
+              }`}
+            >
+              {l.label}
+            </Link>
+          ))}
+        </nav>
+      </header>
+
+      <main className="min-h-[100svh] bg-background pt-32 lg:pt-28 pb-20">
+        <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
+          {/* Header da página */}
+          <div className="max-w-[680px] mb-14">
+            <span className="eyebrow mb-5">Fale com a Leal Glass</span>
+            <h1 className="font-display text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] tracking-tight text-foreground mb-5">
+              Entre em <span className="text-gold italic">contato</span>
+            </h1>
+            <p className="text-[1.05rem] leading-relaxed text-muted-brand">
+              Para orçamentos, parcerias, envio de documentos e desenhos técnicos
+              ou qualquer outro assunto. Respondemos em até 1 dia útil.
+            </p>
+          </div>
 
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
           {/* ─── Quadro de contatos ─── */}
@@ -503,12 +587,21 @@ export default function ContatoClient() {
                   onChange={(e) =>
                     setForm({ ...form, subject: e.target.value as (typeof SUBJECTS)[number]['value'] })
                   }
-                  className="form-input w-full h-[44px] px-3 rounded-md text-[0.9rem] text-foreground bg-surface2"
+                  className="form-input w-full h-[44px] px-3 rounded-md text-[0.9rem] text-foreground bg-surface2 border border-white/[0.12] focus:border-gold focus:outline-none transition-colors cursor-pointer appearance-none"
+                  style={{
+                    colorScheme: 'dark',
+                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9A24B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 12px center',
+                    paddingRight: '36px',
+                  }}
                   aria-invalid={!!errors.subject}
                 >
-                  <option value="">Selecione o assunto…</option>
+                  <option value="" className="bg-[#07080C] text-white/50">
+                    Selecione o assunto…
+                  </option>
                   {SUBJECTS.map((s) => (
-                    <option key={s.value} value={s.value}>
+                    <option key={s.value} value={s.value} className="bg-[#07080C] text-white">
                       {s.label}
                     </option>
                   ))}
@@ -668,5 +761,6 @@ export default function ContatoClient() {
         </div>
       </div>
     </main>
+    </>
   );
 }
