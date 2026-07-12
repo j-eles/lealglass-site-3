@@ -14,6 +14,7 @@ import {
   type FormEvent,
 } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import {
   ArrowRight,
   Menu,
@@ -122,42 +123,42 @@ const SISTEMAS = [
     categoria: 'Residências de Alto Padrão',
     sistema: 'Esquadrias Sob Medida · Alumínio e PVC',
     frases: ['Grandes vãos.', 'Precisão estrutural.', 'Máxima transparência.'],
-    img: '/obras-curated-v2/varanda-vidro-branca.png',
+    img: '/obras-curated-v2/varanda-vidro-branca.webp',
   },
   {
     n: '02',
     categoria: 'Edifícios Corporativos',
     sistema: 'Pele de Vidro · Curtain Wall',
     frases: ['Perfis minimalistas.', 'Desempenho termoacústico.', 'Escala vertical.'],
-    img: '/obras-curated-v2/fachada3.jpg',
+    img: '/obras-curated-v2/fachada3.webp',
   },
   {
     n: '03',
     categoria: 'Grandes Vãos',
     sistema: 'Structural Glazing · Vidro Estrutural',
     frases: ['Vãos acima de 3 metros.', 'Perfilagem oculta.', 'Luz sem interrupção.'],
-    img: '/obras-curated-v2/hospital-sao-vicente-araucaria.png',
+    img: '/obras-curated-v2/hospital-sao-vicente-araucaria.webp',
   },
   {
     n: '04',
     categoria: 'Minimal Frame',
     sistema: 'Linha Perfecta Plus 3.5',
     frases: ['Perfil de 3,5 mm.', 'Isolamento térmico.', 'A arquitetura aparece.'],
-    img: '/obras-curated-v2/fachada2.png',
+    img: '/obras-curated-v2/fachada2.webp',
   },
   {
     n: '05',
     categoria: 'Fachadas de Vidro',
     sistema: 'Guarda-Corpos · Fachada Contínua',
     frases: ['Vidro laminado temperado.', 'Segurança NBR 14718.', 'Continuidade visual.'],
-    img: '/obras-curated-v2/guarda-corpo.jpg',
+    img: '/obras-curated-v2/guarda-corpo.webp',
   },
   {
     n: '06',
     categoria: 'Espaços Comerciais',
     sistema: 'Fachada Comercial · Vedação Técnica',
     frases: ['Vidros de grande formato.', 'Estrutura metálica.', 'Durabilidade NBR 15928.'],
-    img: '/obras-curated-v2/fachada16.jpg',
+    img: '/obras-curated-v2/fachada16.webp',
   },
 ];
 
@@ -165,49 +166,49 @@ const OBRAS = [
   {
     name: 'Edifício Marbella',
     city: 'Caiobá, PR',
-    img: '/obras-curated-v2/edificio-marbella-caioba-pr.png',
+    img: '/obras-curated-v2/edificio-marbella-caioba-pr.webp',
     span: 'lg:col-span-2 lg:row-span-2',
   },
   {
     name: 'Residência Alphaville',
     city: 'Barueri, SP',
-    img: '/obras-curated-v2/residencia-alphaville-barueri-sp.png',
+    img: '/obras-curated-v2/residencia-alphaville-barueri-sp.webp',
     span: '',
   },
   {
     name: 'Nichele Unidade',
     city: 'Araucária, PR',
-    img: '/obras-curated-v2/nichele-unidade-araucaria-pr.jpg',
+    img: '/obras-curated-v2/nichele-unidade-araucaria-pr.webp',
     span: '',
   },
   {
     name: 'Residência Alphaville',
     city: 'Curitiba, PR',
-    img: '/obras-curated-v2/residencia-alphaville-curitiba-pr.jpg',
+    img: '/obras-curated-v2/residencia-alphaville-curitiba-pr.webp',
     span: '',
   },
   {
     name: 'Residencial Nice',
     city: 'Caiobá, PR',
-    img: '/obras-curated-v2/residencial-nice-caioba-pr.png',
+    img: '/obras-curated-v2/residencial-nice-caioba-pr.webp',
     span: 'lg:col-span-2',
   },
   {
     name: 'Shopping Pinheirinho Mall',
     city: 'Curitiba, PR',
-    img: '/obras-curated-v2/shopping-pinheirinho-mall-curitiba-pr.jpg',
+    img: '/obras-curated-v2/shopping-pinheirinho-mall-curitiba-pr.webp',
     span: '',
   },
   {
     name: 'Hospital São Vicente',
     city: 'Araucária, PR',
-    img: '/obras-curated-v2/hospital-sao-vicente-araucaria-pr.png',
+    img: '/obras-curated-v2/hospital-sao-vicente-araucaria-pr.webp',
     span: '',
   },
   {
     name: 'Shopping MK',
     city: 'Caiobá, PR',
-    img: '/obras-curated-v2/shopping-mk-caioba-pr.jpg',
+    img: '/obras-curated-v2/shopping-mk-caioba-pr.webp',
     span: '',
   },
 ];
@@ -417,11 +418,13 @@ function Reveal({
   delay = 0,
   y = 28,
   className = '',
+  ...rest
 }: {
   children: React.ReactNode;
   delay?: number;
   y?: number;
   className?: string;
+  [key: string]: unknown;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
@@ -432,6 +435,7 @@ function Reveal({
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={className}
+      {...rest}
     >
       {children}
     </motion.div>
@@ -587,13 +591,13 @@ export default function Home() {
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10 flex items-center justify-between">
             {/* Logo */}
             <a href="#hero" className="flex items-center gap-3 group" aria-label="Leal Glass — início">
-              <img
+              <Image
                 src="/logo-navbar.png"
                 alt="Logotipo Leal Glass"
                 width={40}
                 height={40}
                 className="w-10 h-10 object-contain"
-                fetchPriority="high"
+                priority
               />
               <span className="font-display text-xl tracking-tight text-foreground">
                 Leal <span className="text-gold italic">Glass</span>
@@ -729,11 +733,23 @@ export default function Home() {
                 </span>
               </div>
 
+              {/* SEO eyebrow — keyword visível para Google sem prejudicar a poesia do H1 */}
+              <span className="block text-[0.78rem] font-mono-brand uppercase tracking-[0.22em] text-gold/80 mb-4">
+                Esquadrias de Alumínio de Alto Padrão · Curitiba
+              </span>
+
               <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] tracking-tight text-foreground mb-5">
                 Cada milímetro<br />
                 <span className="text-gold italic">influencia o valor</span><br />
                 da sua obra
               </h1>
+
+              {/* H2 oculto para SEO — reforça keyword sem atrapalhar a leitura visual */}
+              <h2 className="sr-only">
+                Fachadas e esquadrias de alumínio de alto padrão em Curitiba — Structural Glazing,
+                Perfecta Plus 3.5, guarda-corpos de vidro e fachadas ventiladas para residências,
+                edifícios corporativos e construções de alto padrão no Paraná.
+              </h2>
 
               <p className="max-w-[480px] text-[1.05rem] leading-relaxed text-muted-brand mb-10">
                 O vidro aproxima. A engenharia sustenta. A arquitetura aparece.
@@ -886,16 +902,21 @@ export default function Home() {
             >
               {/* Full-bleed background image */}
               <div className="absolute inset-0 z-0" aria-hidden="true">
-                <motion.img
-                  src={s.img}
-                  alt={`${s.categoria} — ${s.sistema} executado pela Leal Glass`}
-                  loading="lazy"
+                <motion.div
                   initial={{ scale: 1.12, opacity: 0.3 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true, margin: '-15% 0px -15% 0px' }}
                   transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="w-full h-full object-cover"
-                />
+                  className="w-full h-full relative"
+                >
+                  <Image
+                    src={s.img}
+                    alt={`${s.categoria} — ${s.sistema} executado pela Leal Glass`}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </motion.div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
                 <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
               </div>
@@ -968,7 +989,7 @@ export default function Home() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[260px]">
               {OBRAS.map((o, i) => (
                 <Reveal
-                  key={o.name}
+                  key={`${o.name}-${o.city}`}
                   delay={(i % 3) * 0.08}
                   className={`gallery-item group relative overflow-hidden rounded-lg cursor-pointer ${o.span}`}
                 >
@@ -978,10 +999,11 @@ export default function Home() {
                     className="absolute inset-0 w-full h-full text-left"
                     aria-label={`Ampliar imagem da obra ${o.name}`}
                   >
-                    <img
+                    <Image
                       src={o.img}
                       alt={`${o.name} — ${o.city}`}
-                      loading="lazy"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="gallery-img w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
@@ -1343,11 +1365,12 @@ export default function Home() {
           aria-labelledby="cta-title"
         >
           <div className="absolute inset-0 z-0" aria-hidden="true">
-            <img
-              src="/obras-curated/cta-bg-varanda-vidro.jpeg"
+            <Image
+              src="/obras-curated/cta-bg-varanda-vidro.webp"
               alt=""
-              loading="lazy"
-              className="w-full h-full object-cover opacity-15"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-15"
             />
             <div className="absolute inset-0 bg-gradient-to-br from-background via-background/92 to-background/75" />
           </div>
@@ -1573,7 +1596,7 @@ export default function Home() {
           <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr_1fr] mb-12">
             <div>
               <a href="#hero" className="flex items-center gap-3 mb-4" aria-label="Leal Glass">
-                <img
+                <Image
                   src="/logo-navbar.png"
                   alt="Logotipo Leal Glass"
                   width={40}
@@ -1833,10 +1856,14 @@ export default function Home() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-[1100px] w-full"
             >
-              <img
+              <Image
                 src={OBRAS[lightbox].img}
                 alt={`${OBRAS[lightbox].name} — ${OBRAS[lightbox].city}`}
+                width={1100}
+                height={700}
+                sizes="(max-width: 1100px) 100vw, 1100px"
                 className="w-full max-h-[68vh] object-contain rounded-lg"
+                priority
               />
               <div className="mt-6 text-center">
                 <h3 className="font-display text-2xl mb-2 tracking-tight">

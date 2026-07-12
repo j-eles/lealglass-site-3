@@ -32,7 +32,7 @@ const dmMono = DM_Mono({
 });
 
 const SITE_URL = "https://www.lealglass.com.br";
-const HERO_IMG = `${SITE_URL}/obras-curated/og-casa-cubo-vidro.jpeg`;
+const HERO_IMG = `${SITE_URL}/obras-curated/og-casa-cubo-vidro.webp`;
 
 /* ════════════════════════════════════════════════════════════
    METADATA — complete SEO, Open Graph, Twitter, robots
