@@ -737,7 +737,7 @@ export default function Home() {
 
               <p className="max-w-[480px] text-[1.05rem] leading-relaxed text-muted-brand mb-10">
                 O vidro aproxima. A engenharia sustenta. A arquitetura aparece.
-                Para construtoras e escritórios que não admitem retrabalho.
+                Para construtoras, escritórios e proprietários que não admitem retrabalho.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-14">
