@@ -92,7 +92,7 @@ const NAV_LINKS = [
   { label: 'Diferenciais', href: '#diferenciais' },
   { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'FAQ', href: '#faq' },
-  { label: 'Contato', href: '#orcamento' },
+  { label: 'Contato', href: '/contato' },
   { label: 'Privacidade', href: '/politica-de-privacidade' },
 ];
 

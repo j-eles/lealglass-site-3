@@ -55,3 +55,6 @@ server.log
 # SQLite local database
 db/*.db
 db/*.db-journal
+
+# Uploads recebidos via formulário de contato
+/uploads/
