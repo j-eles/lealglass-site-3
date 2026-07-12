@@ -14,6 +14,7 @@
 import { useState, type FormEvent, type ChangeEvent, type DragEvent } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion } from 'framer-motion';
 import {
   Phone,
   MessageCircle,
@@ -333,10 +334,20 @@ export default function ContatoClient() {
         </nav>
       </header>
 
-      <main className="min-h-[100svh] bg-background pt-32 lg:pt-28 pb-20">
+      <motion.main
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+        className="min-h-[100svh] bg-background pt-32 lg:pt-28 pb-20"
+      >
         <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
           {/* Header da página */}
-          <div className="max-w-[680px] mb-14">
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="max-w-[680px] mb-14"
+          >
             <span className="eyebrow mb-5">Fale com a Leal Glass</span>
             <h1 className="font-display text-[clamp(2.2rem,5vw,3.5rem)] leading-[1.05] tracking-tight text-foreground mb-5">
               Entre em <span className="text-gold italic">contato</span>
@@ -345,11 +356,16 @@ export default function ContatoClient() {
               Para orçamentos, parcerias, envio de documentos e desenhos técnicos
               ou qualquer outro assunto. Respondemos em até 1 dia útil.
             </p>
-          </div>
+          </motion.div>
 
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
           {/* ─── Quadro de contatos ─── */}
-          <aside className="space-y-5">
+          <motion.aside
+            initial={{ opacity: 0, x: -16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="space-y-5"
+          >
             {/* Telefones */}
             <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
               <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
@@ -481,10 +497,15 @@ export default function ContatoClient() {
                 </div>
               </div>
             </div>
-          </aside>
+          </motion.aside>
 
           {/* ─── Formulário ─── */}
-          <div className="bg-surface border border-white/[0.06] rounded-xl p-6 lg:p-10">
+          <motion.div
+            initial={{ opacity: 0, x: 16 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="bg-surface border border-white/[0.06] rounded-xl p-6 lg:p-10"
+          >
             <h2 className="font-display text-2xl tracking-tight text-foreground mb-2">
               Envie sua mensagem
             </h2>
@@ -757,10 +778,10 @@ export default function ContatoClient() {
                 .
               </p>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
-    </main>
+    </motion.main>
     </>
   );
 }
