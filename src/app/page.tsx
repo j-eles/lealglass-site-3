@@ -109,7 +109,7 @@ const HERO_STATS = [
 
 const METRICS = [
   { value: 200, suffix: '+', label: 'Obras entregues em Curitiba e região' },
-  { value: 15, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
+  { value: 15, suffix: '.000+ m²', label: 'De esquadrias fabricadas e instaladas' },
   { value: 5, suffix: ' anos', label: 'De garantia em estrutura e vedação' },
   { value: 98, suffix: '%', label: 'De clientes que retornam' },
 ];
@@ -359,19 +359,42 @@ function useScrolled(threshold = 40) {
 
 function useCountUp(target: number, inView: boolean, duration = 1600) {
   const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+
   useEffect(() => {
-    if (!inView) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setValue(Math.round(eased * target));
-      if (p < 1) raf = requestAnimationFrame(tick);
+    if (startedRef.current) return;
+
+    // Inicia a animação quando entra em view
+    // OU após 1.5s como fallback (caso o IntersectionObserver falhe em mobile)
+    const startAnimation = () => {
+      if (startedRef.current) return;
+      startedRef.current = true;
+
+      let raf = 0;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setValue(Math.round(eased * target));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(raf);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    if (inView) {
+      const cleanup = startAnimation();
+      return cleanup;
+    }
+
+    // Fallback: inicia após 1.5s mesmo sem inView
+    const fallbackTimer = setTimeout(() => {
+      startAnimation();
+    }, 1500);
+
+    return () => clearTimeout(fallbackTimer);
   }, [inView, target, duration]);
+
   return value;
 }
 
@@ -747,14 +770,6 @@ export default function Home() {
                 ))}
               </div>
             </motion.div>
-          </div>
-
-          {/* Scroll cue — visible on all viewports */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-muted-brand">
-            <span className="text-[0.62rem] font-mono-brand uppercase tracking-[0.25em]">
-              Role
-            </span>
-            <div className="w-px h-10 bg-gradient-to-b from-gold to-transparent" />
           </div>
         </section>
 
