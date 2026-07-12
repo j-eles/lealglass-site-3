@@ -141,7 +141,7 @@ function JsonLd() {
       logo: `${SITE_URL}/logo-retina.png`,
       image: HERO_IMG,
       telephone: "+554130570873",
-      email: "sistemas@lealglass.com.br",
+      email: "contato@lealglass.com.br",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Rua Antonio Ribeiro Macedo, 295, Xaxim",

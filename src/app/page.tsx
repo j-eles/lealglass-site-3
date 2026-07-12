@@ -92,6 +92,7 @@ const NAV_LINKS = [
   { label: 'Diferenciais', href: '#diferenciais' },
   { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Contato', href: '#orcamento' },
   { label: 'Privacidade', href: '/politica-de-privacidade' },
 ];
 
@@ -1484,6 +1485,33 @@ export default function Home() {
                   )}
                 </div>
 
+                {/* Email (opcional) */}
+                <div>
+                  <label htmlFor="fEmail" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                    Email <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
+                  </label>
+                  <input
+                    id="fEmail"
+                    type="email"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => {
+                      setForm({ ...form, email: e.target.value });
+                      if (errors.email) setErrors({ ...errors, email: '' });
+                    }}
+                    placeholder="voce@email.com"
+                    inputMode="email"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'fEmail-err' : undefined}
+                    className={`form-input w-full px-4 py-3.5 rounded-md text-[0.9rem] text-foreground ${errors.email ? 'border-red-400/60' : ''}`}
+                  />
+                  {errors.email && (
+                    <p id="fEmail-err" className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                      <X className="w-3 h-3" /> {errors.email}
+                    </p>
+                  )}
+                </div>
+
                 {/* Tipo de projeto */}
                 <div>
                   <label htmlFor="fProject" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
@@ -1670,8 +1698,11 @@ export default function Home() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:sistemas@lealglass.com.br" className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-gold" /> sistemas@lealglass.com.br
+                  <a
+                    href="mailto:contato@lealglass.com.br?subject=Or%C3%A7amento%20de%20esquadrias%20%E2%80%94%20Site%20Leal%20Glass&body=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento.%0A%0A%20Nome%3A%20%0A%20Telefone%2FWhatsApp%3A%20%0A%20Tipo%20de%20projeto%3A%20%0A%20Mensagem%3A%20"
+                    className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-gold" /> contato@lealglass.com.br
                   </a>
                 </li>
                 <li className="text-[0.85rem] text-muted-brand flex items-start gap-2">
