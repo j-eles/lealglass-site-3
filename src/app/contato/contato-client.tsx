@@ -334,18 +334,13 @@ export default function ContatoClient() {
         </nav>
       </header>
 
-      <motion.main
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        className="min-h-[100svh] bg-background pt-32 lg:pt-28 pb-20"
-      >
+      <main className="min-h-[100svh] bg-background pt-32 lg:pt-28 pb-20">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
           {/* Header da página */}
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ y: 12 }}
+            animate={{ y: 0 }}
+            transition={{ duration: 0.6, delay: 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="max-w-[680px] mb-14"
           >
             <span className="eyebrow mb-5">Fale com a Leal Glass</span>
@@ -361,9 +356,9 @@ export default function ContatoClient() {
         <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
           {/* ─── Quadro de contatos ─── */}
           <motion.aside
-            initial={{ opacity: 0, x: -16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ x: -12 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="space-y-5"
           >
             {/* Telefones */}
@@ -501,9 +496,9 @@ export default function ContatoClient() {
 
           {/* ─── Formulário ─── */}
           <motion.div
-            initial={{ opacity: 0, x: 16 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+            initial={{ x: 12 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
             className="bg-surface border border-white/[0.06] rounded-xl p-6 lg:p-10"
           >
             <h2 className="font-display text-2xl tracking-tight text-foreground mb-2">
@@ -781,7 +776,7 @@ export default function ContatoClient() {
           </motion.div>
         </div>
       </div>
-    </motion.main>
+    </main>
     </>
   );
 }
