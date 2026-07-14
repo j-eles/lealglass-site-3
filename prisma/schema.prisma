@@ -55,25 +55,3 @@ model DeviceToken {
 
   @@index([userEmail])
 }
-
-/// Mensagens recebidas pelo formulário de contato genérico (/contato).
-/// Diferente do Lead (que é só orçamento), ContatoMessage aceita qualquer assunto
-/// e pode ter arquivos anexados (PDFs, DWGs, etc).
-model ContatoMessage {
-  id        String   @id @default(cuid())
-  ticketId  String   @unique
-  name      String
-  company   String?
-  email     String
-  phone     String?
-  subject   String   // orcamento | documentos | suporte | parceria | carreira | outro
-  message   String
-  files     String?  // JSON array de {name, size, path}
-  ip        String?
-  status    String   @default("new") // new | read | replied | archived
-  createdAt DateTime @default(now())
-
-  @@index([createdAt])
-  @@index([status])
-  @@index([subject])
-}

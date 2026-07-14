@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-const WHATSAPP_NUMBER = "5541998612093";
+const WHATSAPP_NUMBER = "5541998512093";
 const WHATSAPP_MSG =
   "Olá! Acabei de enviar uma solicitação de diagnóstico pelo site e gostaria de adiantar o atendimento.";
 

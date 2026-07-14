@@ -174,7 +174,7 @@ export async function POST(request: NextRequest) {
           },
           body: JSON.stringify({
             from: "site@lealglass.com.br",
-            to: "contato@lealglass.com.br",
+            to: "sistemas@lealglass.com.br",
             subject: `Novo lead: ${lead.name} — ${lead.company || "sem empresa"}`,
             text: [
               `Nome:     ${lead.name}`,

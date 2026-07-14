@@ -13,12 +13,11 @@
 
 import admin from 'firebase-admin';
 import { getMessaging, type Messaging } from 'firebase-admin/messaging';
-import type { App } from 'firebase-admin/app';
 
-let app: App | null = null;
+let app: admin.app.App | null = null;
 let messagingInstance: Messaging | null = null;
 
-function getAdminApp(): App {
+function getAdminApp(): admin.app.App {
   if (app) return app;
 
   const serviceAccountProjectId = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID;

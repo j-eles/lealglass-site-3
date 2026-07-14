@@ -1,28 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import { existsSync } from 'fs';
 import { randomBytes } from 'crypto';
 
 /**
  * POST /api/contato
  *
  * Formulário genérico de contato com upload de arquivos.
- * -Aceita FormData: name, company, email, phone, subject, message, consent, files[]
- * -Salva arquivos em /uploads/contato/{ticket}/{filename}
- * -Salva registro no Turso (tabela ContatoMessage)
- * -Envia email via Resend se RESEND_API_KEY configurado
+ * - Aceita FormData: name, company, email, phone, subject, message, consent, files[]
+ * - Salva registro no Turso (tabela ContatoMessage)
+ * - Envia email via Resend com anexos (se RESEND_API_KEY configurado)
+ *
+ * ⚠️ COMPATÍVEL COM VERCEL: não escreve arquivos no disco (filesystem read-only).
+ * Anexa os arquivos diretamente no email via Resend (base64).
+ *
+ * ⚠️ LIMITE DA VERCEL: Serverless Functions têm limite de 4.5 MB para o body.
+ * Por isso, limitamos a 4 MB total de anexos (margem de segurança).
  *
  * Aceita: PDF, DWG, DXF, JPG, PNG, WebP
- * Máximo: 10 MB por arquivo, 5 arquivos
+ * Máximo: 4 MB por arquivo, 3 arquivos, 4 MB total
  */
 export const runtime = 'nodejs';
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
-const MAX_FILES = 5;
+const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4 MB por arquivo (limite Vercel)
+const MAX_TOTAL_SIZE = 4 * 1024 * 1024; // 4 MB total (limite Vercel = 4.5 MB)
+const MAX_FILES = 3;
 const ACCEPTED_EXTENSIONS = ['.pdf', '.dwg', '.dxf', '.jpg', '.jpeg', '.png', '.webp'];
 
-// Rate limiting simples em memória (5 requests por IP a cada 60s)
+// Rate limiting simples em memória
 const RATE_LIMIT = 5;
 const RATE_WINDOW_MS = 60_000;
 const ipHits = new Map<string, number[]>();
@@ -51,6 +54,14 @@ function generateTicketId(): string {
   const ts = Date.now().toString(36);
   const rand = randomBytes(4).toString('hex');
   return `CT${ts}${rand}`;
+}
+
+function sanitizeFilename(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-zA-Z0-9._-]/g, '_')
+    .slice(0, 100);
 }
 
 export async function POST(request: NextRequest) {
@@ -112,45 +123,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Valida cada arquivo
+    // Valida cada arquivo e calcula tamanho total
+    let totalSize = 0;
+    const fileInfos: { name: string; size: number }[] = [];
     for (const file of files) {
       if (file.size > MAX_FILE_SIZE) {
         return NextResponse.json(
-          { error: `${file.name}: arquivo maior que 10 MB.` },
+          { error: `${file.name}: arquivo maior que 4 MB.` },
           { status: 400 }
         );
       }
+      totalSize += file.size;
       const ext = '.' + (file.name.split('.').pop() || '').toLowerCase();
       if (!ACCEPTED_EXTENSIONS.includes(ext)) {
         return NextResponse.json(
-          { error: `${file.name}: tipo não suportado.` },
+          { error: `${file.name}: tipo não suportado. Aceitos: ${ACCEPTED_EXTENSIONS.join(', ')}` },
           { status: 400 }
         );
       }
+      fileInfos.push({
+        name: sanitizeFilename(file.name),
+        size: file.size,
+      });
+    }
+
+    if (totalSize > MAX_TOTAL_SIZE) {
+      return NextResponse.json(
+        { error: `Tamanho total dos arquivos excede 4 MB.` },
+        { status: 400 }
+      );
     }
 
     const ticketId = generateTicketId();
-    const savedFiles: { name: string; size: number; path: string }[] = [];
 
-    // Salva arquivos em disco se houver
-    if (files.length > 0) {
-      const uploadDir = join(process.cwd(), 'uploads', 'contato', ticketId);
-      await mkdir(uploadDir, { recursive: true });
-
-      for (const file of files) {
-        const buffer = Buffer.from(await file.arrayBuffer());
-        // Sanitiza nome do arquivo
-        const safeName = file.name
-          .normalize('NFD')
-          .replace(/[\u0300-\u036f]/g, '')
-          .replace(/[^a-zA-Z0-9._-]/g, '_');
-        const filePath = join(uploadDir, safeName);
-        await writeFile(filePath, buffer);
-        savedFiles.push({ name: safeName, size: file.size, path: `/uploads/contato/${ticketId}/${safeName}` });
-      }
+    // Prepara anexos para o Resend (base64, formato correto)
+    // Resend aceita apenas: filename + content (base64 string)
+    const attachments: { filename: string; content: string }[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const info = fileInfos[i];
+      const buffer = Buffer.from(await file.arrayBuffer());
+      attachments.push({
+        filename: info.name,
+        content: buffer.toString('base64'),
+      });
     }
 
-    // Salva no Turso (tabela ContatoMessage — criada via setup-turso.ts)
+    // Salva no Turso
     try {
       const { db } = await import('@/lib/db');
       const id = `cm${Date.now().toString(36)}${randomBytes(4).toString('hex')}`;
@@ -166,7 +185,7 @@ export async function POST(request: NextRequest) {
           phone || null,
           subject,
           message,
-          savedFiles.length > 0 ? JSON.stringify(savedFiles) : null,
+          fileInfos.length > 0 ? JSON.stringify(fileInfos) : null,
           ip,
         ],
       });
@@ -174,7 +193,7 @@ export async function POST(request: NextRequest) {
       console.error('[CONTATO] DB error (não bloqueante):', dbErr);
     }
 
-    // Dispara email via Resend se configurado
+    // Dispara email via Resend se configurado (com anexos)
     if (process.env.RESEND_API_KEY) {
       try {
         const subjectLabels: Record<string, string> = {
@@ -199,27 +218,40 @@ export async function POST(request: NextRequest) {
           'Mensagem:',
           message,
           '',
-          savedFiles.length > 0
-            ? `Arquivos anexados (${savedFiles.length}):\n${savedFiles
+          fileInfos.length > 0
+            ? `Arquivos anexados (${fileInfos.length}):\n${fileInfos
                 .map((f) => `  - ${f.name} (${(f.size / 1024).toFixed(0)} KB)`)
                 .join('\n')}`
             : 'Sem anexos.',
         ].join('\n');
 
-        await fetch('https://api.resend.com/emails', {
+        const emailPayload: Record<string, unknown> = {
+          from: 'site@lealglass.com.br',
+          to: 'contato@lealglass.com.br',
+          reply_to: email,
+          subject: `[${ticketId}] ${subjectLabels[subject] || 'Contato'} — ${name}`,
+          text: emailBody,
+        };
+
+        // Só adiciona attachments se houver arquivos
+        if (attachments.length > 0) {
+          emailPayload.attachments = attachments;
+        }
+
+        const resendResponse = await fetch('https://api.resend.com/emails', {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({
-            from: 'site@lealglass.com.br',
-            to: 'contato@lealglass.com.br',
-            reply_to: email,
-            subject: `[${ticketId}] ${subjectLabels[subject] || 'Contato'} — ${name}`,
-            text: emailBody,
-          }),
+          body: JSON.stringify(emailPayload),
         });
+
+        if (!resendResponse.ok) {
+          const errorText = await resendResponse.text();
+          console.error('[CONTATO] Resend API error:', resendResponse.status, errorText);
+          // Não bloqueia o response — a mensagem já foi salva no banco
+        }
       } catch (emailErr) {
         console.error('[CONTATO] Email error (não bloqueante):', emailErr);
       }
@@ -232,6 +264,13 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error('[CONTATO] unexpected:', err);
+    // Se for erro de payload muito grande (Vercel 413)
+    if (err instanceof Error && err.message.includes('body')) {
+      return NextResponse.json(
+        { error: 'Arquivos muito grandes. Limite total: 4 MB.' },
+        { status: 413 }
+      );
+    }
     return NextResponse.json(
       { error: 'Erro interno. Tente novamente ou use o WhatsApp.' },
       { status: 500 }

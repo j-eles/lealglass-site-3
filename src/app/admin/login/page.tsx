@@ -7,7 +7,7 @@
  * Em caso de sucesso, redireciona para /admin/pedidos (ou ?next=...).
  */
 
-import { useState, type FormEvent, Suspense } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, Mail, ArrowRight, AlertCircle, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -15,14 +15,6 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export default function AdminLoginPage() {
-  return (
-    <Suspense fallback={null}>
-      <AdminLoginForm />
-    </Suspense>
-  );
-}
-
-function AdminLoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const next = searchParams.get('next') || '/admin/pedidos';
