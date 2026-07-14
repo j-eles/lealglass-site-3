@@ -3,10 +3,12 @@
 /**
  * Página /contato
  *
- * Quadro completo de canais de contato + formulário genérico com upload de documentos.
+ * Quadro completo de canais de contato (telefone, WhatsApp, email, endereço, horários)
+ * + formulário genérico para outros assuntos (fora orçamento) com upload de documentos e desenhos.
  *
  * Upload aceita: PDF, DWG, DXF, JPG, PNG, WebP — até 4 MB por arquivo, até 3 arquivos.
- * Arquivos são enviados via FormData para /api/contato, que anexa no email via Resend.
+ * Arquivos são enviados via FormData para /api/contato, que salva em disco (uploads/contato/)
+ * e dispara email para contato@lealglass.com.br com os anexos (se RESEND_API_KEY configurado).
  */
 
 import { useState, type FormEvent, type ChangeEvent, type DragEvent } from 'react';
@@ -19,6 +21,7 @@ import {
   Mail,
   MapPin,
   Clock,
+  Building2,
   ArrowRight,
   AlertCircle,
   Loader2,
@@ -67,11 +70,20 @@ const SUBJECTS = [
 
 const MAX_FILE_SIZE = 4 * 1024 * 1024; // 4 MB (limite Vercel)
 const MAX_FILES = 3;
+const ACCEPTED_TYPES = [
+  'application/pdf',
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+  // DWG/DXF não têm MIME type oficial — aceitamos por extensão
+];
 const ACCEPTED_EXTENSIONS = ['.pdf', '.dwg', '.dxf', '.jpg', '.jpeg', '.png', '.webp'];
 
 type FileItem = {
   file: File;
   id: string;
+  preview?: string;
 };
 
 export default function ContatoClient() {
@@ -93,7 +105,7 @@ export default function ContatoClient() {
   function handleFileChange(e: ChangeEvent<HTMLInputElement>) {
     const newFiles = Array.from(e.target.files || []);
     addFiles(newFiles);
-    e.target.value = '';
+    e.target.value = ''; // permite re-selecionar o mesmo arquivo
   }
 
   function handleDrop(e: DragEvent<HTMLDivElement>) {
@@ -117,8 +129,9 @@ export default function ContatoClient() {
         continue;
       }
       const ext = '.' + file.name.split('.').pop()?.toLowerCase();
+      const isAcceptedMime = ACCEPTED_TYPES.includes(file.type);
       const isAcceptedExt = ACCEPTED_EXTENSIONS.includes(ext);
-      if (!isAcceptedExt) {
+      if (!isAcceptedMime && !isAcceptedExt) {
         errorsList.push(
           `${file.name}: tipo não suportado. Aceitos: ${ACCEPTED_EXTENSIONS.join(', ')}`
         );
@@ -149,6 +162,7 @@ export default function ContatoClient() {
     e.preventDefault();
     setErrors({});
 
+    // Validações
     const newErrors: Record<string, string> = {};
     if (!form.name.trim() || form.name.trim().length < 2) {
       newErrors.name = 'Informe seu nome.';
@@ -249,9 +263,10 @@ export default function ContatoClient() {
 
   return (
     <>
-      {/* Header fixo com navegação */}
+      {/* ─── Header fixo com navegação ─── */}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur border-b border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto px-6 lg:px-10 h-20 flex items-center justify-between">
+          {/* Logo */}
           <Link href="/" className="flex items-center gap-3 group" aria-label="Leal Glass — início">
             <Image
               src="/logo-navbar.png"
@@ -266,6 +281,7 @@ export default function ContatoClient() {
             </span>
           </Link>
 
+          {/* Nav desktop */}
           <nav className="hidden lg:flex items-center gap-6">
             {NAV_LINKS.map((l) => (
               <Link
@@ -282,6 +298,7 @@ export default function ContatoClient() {
             ))}
           </nav>
 
+          {/* CTA + Voltar (mobile) */}
           <div className="flex items-center gap-3">
             <Link
               href="/#orcamento"
@@ -299,6 +316,7 @@ export default function ContatoClient() {
           </div>
         </div>
 
+        {/* Nav mobile (scroll horizontal) */}
         <nav className="lg:hidden flex items-center gap-4 px-6 pb-3 overflow-x-auto border-t border-white/[0.04]">
           {NAV_LINKS.map((l) => (
             <Link
@@ -335,429 +353,430 @@ export default function ContatoClient() {
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
-            {/* Quadro de contatos */}
-            <motion.aside
-              initial={{ x: -12 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="space-y-5"
-            >
-              {/* Telefones */}
-              <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
-                <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
-                  Telefones
-                </h2>
-                <ul className="space-y-4">
-                  <li>
-                    <a
-                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-                        'Olá! Vim pelo site da Leal Glass.'
-                      )}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-start gap-3 group"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-[#25d366]/15 border border-[#25d366]/30 flex items-center justify-center flex-shrink-0">
-                        <MessageCircle className="w-4 h-4 text-[#25d366]" strokeWidth={1.75} />
-                      </div>
-                      <div>
-                        <p className="text-[0.7rem] uppercase tracking-wider text-muted-foreground mb-0.5">
-                          WhatsApp comercial
-                        </p>
-                        <p className="text-[0.95rem] text-foreground group-hover:text-gold transition-colors">
-                          {PHONE_WHATSAPP}
-                        </p>
-                      </div>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="tel:+554130570873" className="flex items-start gap-3 group">
-                      <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
-                        <Phone className="w-4 h-4 text-gold" strokeWidth={1.75} />
-                      </div>
-                      <div>
-                        <p className="text-[0.7rem] uppercase tracking-wider text-muted-foreground mb-0.5">
-                          Fixo comercial
-                        </p>
-                        <p className="text-[0.95rem] text-foreground group-hover:text-gold transition-colors">
-                          {PHONE_COMMERCIAL}
-                        </p>
-                      </div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Email */}
-              <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
-                <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
-                  Email
-                </h2>
-                <a
-                  href={`mailto:${EMAIL}?subject=${encodeURIComponent(
-                    'Contato — Site Leal Glass'
-                  )}&body=${encodeURIComponent(
-                    'Olá, vim pelo site da Leal Glass.\n\nNome: \nTelefone: \nAssunto: \nMensagem: '
-                  )}`}
-                  className="flex items-start gap-3 group"
-                >
-                  <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
-                    <Mail className="w-4 h-4 text-gold" strokeWidth={1.75} />
-                  </div>
-                  <div>
-                    <p className="text-[0.7rem] uppercase tracking-wider text-muted-foreground mb-0.5">
-                      Atendimento comercial
-                    </p>
-                    <p className="text-[0.95rem] text-foreground group-hover:text-gold transition-colors break-all">
-                      {EMAIL}
-                    </p>
-                  </div>
-                </a>
-                <p className="mt-4 text-[0.78rem] text-muted-foreground leading-relaxed">
-                  Para assuntos de LGPD (Lei Geral de Proteção de Dados):
-                  {' '}
-                  <a
-                    href="mailto:sistemas@lealglass.com.br"
-                    className="text-gold hover:text-gold-light underline underline-offset-2"
-                  >
-                    sistemas@lealglass.com.br
-                  </a>
-                </p>
-              </div>
-
-              {/* Endereço */}
-              <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
-                <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
-                  Endereço
-                </h2>
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
-                    <MapPin className="w-4 h-4 text-gold" strokeWidth={1.75} />
-                  </div>
-                  <div>
-                    <p className="text-[0.95rem] text-foreground">{ADDRESS.street}</p>
-                    <p className="text-[0.85rem] text-muted-brand">
-                      {ADDRESS.district}
-                      <br />
-                      {ADDRESS.city}
-                      <br />
-                      {ADDRESS.zip}
-                    </p>
-                  </div>
-                </div>
-                <a
-                  href="https://www.google.com/maps/search/?api=1&query=Leal+Glass+Esquadrias+Curitiba"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-4 inline-flex items-center gap-1.5 text-[0.8rem] text-gold hover:text-gold-light transition"
-                >
-                  Ver no Google Maps
-                  <ArrowRight className="w-3 h-3" strokeWidth={2} />
-                </a>
-              </div>
-
-              {/* Horário */}
-              <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
-                <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
-                  Horário de atendimento
-                </h2>
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
-                    <Clock className="w-4 h-4 text-gold" strokeWidth={1.75} />
-                  </div>
-                  <div className="text-[0.9rem]">
-                    <p className="text-foreground">Segunda a sexta-feira</p>
-                    <p className="text-muted-brand">8h às 18h</p>
-                    <p className="text-foreground mt-2">Sábado</p>
-                    <p className="text-muted-brand">8h às 12h</p>
-                  </div>
-                </div>
-              </div>
-            </motion.aside>
-
-            {/* Formulário */}
-            <motion.div
-              initial={{ x: 12 }}
-              animate={{ x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="bg-surface border border-white/[0.06] rounded-xl p-6 lg:p-10"
-            >
-              <h2 className="font-display text-2xl tracking-tight text-foreground mb-2">
-                Envie sua mensagem
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16">
+          {/* ─── Quadro de contatos ─── */}
+          <motion.aside
+            initial={{ x: -12 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, delay: 0.15, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="space-y-5"
+          >
+            {/* Telefones */}
+            <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
+              <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
+                Telefones
               </h2>
-              <p className="text-[0.88rem] text-muted-brand mb-8">
-                Para orçamentos, prefira o{' '}
-                <Link href="/#orcamento" className="text-gold hover:text-gold-light underline underline-offset-2">
-                  formulário de diagnóstico
-                </Link>
-                . Para outros assuntos, use o formulário abaixo.
-              </p>
-
-              <form onSubmit={handleSubmit} className="space-y-5" noValidate>
-                {/* Nome + Empresa */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="cName" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                      Nome *
-                    </label>
-                    <Input
-                      id="cName"
-                      type="text"
-                      required
-                      autoComplete="name"
-                      value={form.name}
-                      onChange={(e) => setForm({ ...form, name: e.target.value })}
-                      placeholder="Seu nome"
-                      className="form-input"
-                      aria-invalid={!!errors.name}
-                    />
-                    {errors.name && (
-                      <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
-                        <AlertCircle className="w-3 h-3" /> {errors.name}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="cCompany" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                      Empresa <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
-                    </label>
-                    <Input
-                      id="cCompany"
-                      type="text"
-                      autoComplete="organization"
-                      value={form.company}
-                      onChange={(e) => setForm({ ...form, company: e.target.value })}
-                      placeholder="Sua empresa"
-                      className="form-input"
-                    />
-                  </div>
-                </div>
-
-                {/* Email + Telefone */}
-                <div className="grid sm:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="cEmail" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                      Email *
-                    </label>
-                    <Input
-                      id="cEmail"
-                      type="email"
-                      required
-                      autoComplete="email"
-                      value={form.email}
-                      onChange={(e) => setForm({ ...form, email: e.target.value })}
-                      placeholder="voce@email.com"
-                      className="form-input"
-                      aria-invalid={!!errors.email}
-                    />
-                    {errors.email && (
-                      <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
-                        <AlertCircle className="w-3 h-3" /> {errors.email}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label htmlFor="cPhone" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                      Telefone <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
-                    </label>
-                    <Input
-                      id="cPhone"
-                      type="tel"
-                      autoComplete="tel"
-                      value={form.phone}
-                      onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                      placeholder="(41) 99999-9999"
-                      className="form-input"
-                    />
-                  </div>
-                </div>
-
-                {/* Assunto */}
-                <div>
-                  <label htmlFor="cSubject" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                    Assunto *
-                  </label>
-                  <select
-                    id="cSubject"
-                    required
-                    value={form.subject}
-                    onChange={(e) =>
-                      setForm({ ...form, subject: e.target.value as (typeof SUBJECTS)[number]['value'] })
-                    }
-                    className="form-input w-full h-[44px] px-3 rounded-md text-[0.9rem] text-foreground bg-surface2 border border-white/[0.12] focus:border-gold focus:outline-none transition-colors cursor-pointer appearance-none"
-                    style={{
-                      colorScheme: 'dark',
-                      backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9A24B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'right 12px center',
-                      paddingRight: '36px',
-                    }}
-                    aria-invalid={!!errors.subject}
+              <ul className="space-y-4">
+                <li>
+                  <a
+                    href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+                      'Olá! Vim pelo site da Leal Glass.'
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-start gap-3 group"
                   >
-                    <option value="" className="bg-[#07080C] text-white/50">
-                      Selecione o assunto…
-                    </option>
-                    {SUBJECTS.map((s) => (
-                      <option key={s.value} value={s.value} className="bg-[#07080C] text-white">
-                        {s.label}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.subject && (
-                    <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
-                      <AlertCircle className="w-3 h-3" /> {errors.subject}
-                    </p>
-                  )}
-                </div>
-
-                {/* Mensagem */}
-                <div>
-                  <label htmlFor="cMessage" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                    Mensagem *
-                  </label>
-                  <Textarea
-                    id="cMessage"
-                    required
-                    rows={5}
-                    value={form.message}
-                    onChange={(e) => setForm({ ...form, message: e.target.value })}
-                    placeholder="Descreva seu pedido, dúvida ou proposta…"
-                    className="form-input resize-y min-h-[120px]"
-                    aria-invalid={!!errors.message}
-                  />
-                  {errors.message && (
-                    <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
-                      <AlertCircle className="w-3 h-3" /> {errors.message}
-                    </p>
-                  )}
-                </div>
-
-                {/* Upload de arquivos */}
-                <div>
-                  <label className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
-                    Anexos <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
-                  </label>
-                  <div
-                    onDrop={handleDrop}
-                    onDragOver={(e) => {
-                      e.preventDefault();
-                      setDragActive(true);
-                    }}
-                    onDragLeave={() => setDragActive(false)}
-                    className={`border-2 border-dashed rounded-lg p-6 text-center transition ${
-                      dragActive
-                        ? 'border-gold bg-gold-dim/10'
-                        : 'border-white/[0.12] hover:border-white/25'
-                    }`}
-                  >
-                    <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-3" strokeWidth={1.5} />
-                    <p className="text-[0.88rem] text-muted-brand mb-1">
-                      Arraste arquivos aqui ou{' '}
-                      <label className="text-gold hover:text-gold-light underline underline-offset-2 cursor-pointer">
-                        clique para selecionar
-                        <input
-                          type="file"
-                          multiple
-                          accept={ACCEPTED_EXTENSIONS.join(',')}
-                          onChange={handleFileChange}
-                          className="sr-only"
-                        />
-                      </label>
-                    </p>
-                    <p className="text-[0.72rem] text-muted-foreground">
-                      PDF, DWG, DXF, JPG, PNG, WebP · até 4 MB por arquivo · máx. 3 arquivos
-                    </p>
-                  </div>
-
-                  {files.length > 0 && (
-                    <ul className="mt-3 space-y-2">
-                      {files.map((f) => (
-                        <li
-                          key={f.id}
-                          className="flex items-center gap-3 bg-surface2 border border-white/[0.08] rounded-md p-3"
-                        >
-                          <FileText className="w-4 h-4 text-gold flex-shrink-0" />
-                          <div className="flex-1 min-w-0">
-                            <p className="text-[0.85rem] text-foreground truncate">
-                              {f.file.name}
-                            </p>
-                            <p className="text-[0.7rem] text-muted-foreground">
-                              {formatBytes(f.file.size)}
-                            </p>
-                          </div>
-                          <button
-                            type="button"
-                            onClick={() => removeFile(f.id)}
-                            aria-label={`Remover ${f.file.name}`}
-                            className="text-muted-foreground hover:text-red-400 transition flex-shrink-0"
-                          >
-                            <X className="w-4 h-4" />
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                {/* Consentimento LGPD */}
-                <div>
-                  <label className="flex items-start gap-3 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={form.consent}
-                      onChange={(e) => setForm({ ...form, consent: e.target.checked })}
-                      className="mt-1 w-4 h-4 accent-gold cursor-pointer"
-                      aria-invalid={!!errors.consent}
-                    />
-                    <span className="text-[0.8rem] text-muted-brand leading-relaxed">
-                      Li e concordo com a{' '}
-                      <Link
-                        href="/politica-de-privacidade"
-                        className="text-gold hover:text-gold-light underline underline-offset-2"
-                      >
-                        Política de Privacidade
-                      </Link>{' '}
-                      e autorizo o contato comercial conforme a Lei 13.709/2018 (LGPD).
-                    </span>
-                  </label>
-                  {errors.consent && (
-                    <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
-                      <AlertCircle className="w-3 h-3" /> {errors.consent}
-                    </p>
-                  )}
-                </div>
-
-                <Button
-                  type="submit"
-                  disabled={loading}
-                  className="w-full bg-gold text-background hover:bg-gold-light font-medium h-12"
-                >
-                  {loading ? (
-                    <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Enviando…
-                    </>
-                  ) : (
-                    <>
-                      Enviar mensagem
-                      <ArrowRight className="w-4 h-4 ml-2" />
-                    </>
-                  )}
-                </Button>
-
-                <p className="text-[0.72rem] text-muted-foreground text-center">
-                  Resposta em até 1 dia útil. Para urgências, ligue{' '}
-                  <a href="tel:+554130570873" className="text-gold hover:text-gold-light">
-                    {PHONE_COMMERCIAL}
+                    <div className="w-10 h-10 rounded-full bg-[#25d366]/15 border border-[#25d366]/30 flex items-center justify-center flex-shrink-0">
+                      <MessageCircle className="w-4 h-4 text-[#25d366]" strokeWidth={1.75} />
+                    </div>
+                    <div>
+                      <p className="text-[0.7rem] uppercase tracking-wider text-muted-foreground mb-0.5">
+                        WhatsApp comercial
+                      </p>
+                      <p className="text-[0.95rem] text-foreground group-hover:text-gold transition-colors">
+                        {PHONE_WHATSAPP}
+                      </p>
+                    </div>
                   </a>
-                  .
-                </p>
-              </form>
-            </motion.div>
-          </div>
+                </li>
+                <li>
+                  <a href="tel:+554130570873" className="flex items-start gap-3 group">
+                    <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
+                      <Phone className="w-4 h-4 text-gold" strokeWidth={1.75} />
+                    </div>
+                    <div>
+                      <p className="text-[0.7rem] uppercase tracking-wider text-muted-foreground mb-0.5">
+                        Fixo comercial
+                      </p>
+                      <p className="text-[0.95rem] text-foreground group-hover:text-gold transition-colors">
+                        {PHONE_COMMERCIAL}
+                      </p>
+                    </div>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            {/* Email */}
+            <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
+              <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
+                Email
+              </h2>
+              <a
+                href={`mailto:${EMAIL}?subject=${encodeURIComponent(
+                  'Contato — Site Leal Glass'
+                )}&body=${encodeURIComponent(
+                  'Olá, vim pelo site da Leal Glass.\n\nNome: \nTelefone: \nAssunto: \nMensagem: '
+                )}`}
+                className="flex items-start gap-3 group"
+              >
+                <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-4 h-4 text-gold" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <p className="text-[0.7rem] uppercase tracking-wider text-muted-foreground mb-0.5">
+                    Atendimento comercial
+                  </p>
+                  <p className="text-[0.95rem] text-foreground group-hover:text-gold transition-colors break-all">
+                    {EMAIL}
+                  </p>
+                </div>
+              </a>
+              <p className="mt-4 text-[0.78rem] text-muted-foreground leading-relaxed">
+                Para assuntos de LGPD (Lei Geral de Proteção de Dados):
+                {' '}
+                <a
+                  href="mailto:sistemas@lealglass.com.br"
+                  className="text-gold hover:text-gold-light underline underline-offset-2"
+                >
+                  sistemas@lealglass.com.br
+                </a>
+              </p>
+            </div>
+
+            {/* Endereço */}
+            <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
+              <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
+                Endereço
+              </h2>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-4 h-4 text-gold" strokeWidth={1.75} />
+                </div>
+                <div>
+                  <p className="text-[0.95rem] text-foreground">{ADDRESS.street}</p>
+                  <p className="text-[0.85rem] text-muted-brand">
+                    {ADDRESS.district}
+                    <br />
+                    {ADDRESS.city}
+                    <br />
+                    {ADDRESS.zip}
+                  </p>
+                </div>
+              </div>
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Leal+Glass+Esquadrias+Curitiba"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 inline-flex items-center gap-1.5 text-[0.8rem] text-gold hover:text-gold-light transition"
+              >
+                Ver no Google Maps
+                <ArrowRight className="w-3 h-3" strokeWidth={2} />
+              </a>
+            </div>
+
+            {/* Horário */}
+            <div className="bg-surface border border-white/[0.06] rounded-xl p-6">
+              <h2 className="text-[0.72rem] font-mono-brand uppercase tracking-[0.18em] text-gold mb-5">
+                Horário de atendimento
+              </h2>
+              <div className="flex items-start gap-3">
+                <div className="w-10 h-10 rounded-full bg-gold-dim border border-gold-border flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-4 h-4 text-gold" strokeWidth={1.75} />
+                </div>
+                <div className="text-[0.9rem]">
+                  <p className="text-foreground">Segunda a sexta-feira</p>
+                  <p className="text-muted-brand">8h às 18h</p>
+                  <p className="text-foreground mt-2">Sábado</p>
+                  <p className="text-muted-brand">8h às 12h</p>
+                </div>
+              </div>
+            </div>
+          </motion.aside>
+
+          {/* ─── Formulário ─── */}
+          <motion.div
+            initial={{ x: 12 }}
+            animate={{ x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="bg-surface border border-white/[0.06] rounded-xl p-6 lg:p-10"
+          >
+            <h2 className="font-display text-2xl tracking-tight text-foreground mb-2">
+              Envie sua mensagem
+            </h2>
+            <p className="text-[0.88rem] text-muted-brand mb-8">
+              Para orçamentos, prefira o{' '}
+              <Link href="/#orcamento" className="text-gold hover:text-gold-light underline underline-offset-2">
+                formulário de diagnóstico
+              </Link>
+              . Para outros assuntos, use o formulário abaixo.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+              {/* Nome + Empresa */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="cName" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                    Nome *
+                  </label>
+                  <Input
+                    id="cName"
+                    type="text"
+                    required
+                    autoComplete="name"
+                    value={form.name}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    placeholder="Seu nome"
+                    className="form-input"
+                    aria-invalid={!!errors.name}
+                  />
+                  {errors.name && (
+                    <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                      <AlertCircle className="w-3 h-3" /> {errors.name}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="cCompany" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                    Empresa <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
+                  </label>
+                  <Input
+                    id="cCompany"
+                    type="text"
+                    autoComplete="organization"
+                    value={form.company}
+                    onChange={(e) => setForm({ ...form, company: e.target.value })}
+                    placeholder="Sua empresa"
+                    className="form-input"
+                  />
+                </div>
+              </div>
+
+              {/* Email + Telefone */}
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="cEmail" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                    Email *
+                  </label>
+                  <Input
+                    id="cEmail"
+                    type="email"
+                    required
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => setForm({ ...form, email: e.target.value })}
+                    placeholder="voce@email.com"
+                    className="form-input"
+                    aria-invalid={!!errors.email}
+                  />
+                  {errors.email && (
+                    <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                      <AlertCircle className="w-3 h-3" /> {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label htmlFor="cPhone" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                    Telefone <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
+                  </label>
+                  <Input
+                    id="cPhone"
+                    type="tel"
+                    autoComplete="tel"
+                    value={form.phone}
+                    onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                    placeholder="(41) 99999-9999"
+                    className="form-input"
+                  />
+                </div>
+              </div>
+
+              {/* Assunto */}
+              <div>
+                <label htmlFor="cSubject" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                  Assunto *
+                </label>
+                <select
+                  id="cSubject"
+                  required
+                  value={form.subject}
+                  onChange={(e) =>
+                    setForm({ ...form, subject: e.target.value as (typeof SUBJECTS)[number]['value'] })
+                  }
+                  className="form-input w-full h-[44px] px-3 rounded-md text-[0.9rem] text-foreground bg-surface2 border border-white/[0.12] focus:border-gold focus:outline-none transition-colors cursor-pointer appearance-none"
+                  style={{
+                    colorScheme: 'dark',
+                    backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C9A24B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'right 12px center',
+                    paddingRight: '36px',
+                  }}
+                  aria-invalid={!!errors.subject}
+                >
+                  <option value="" className="bg-[#07080C] text-white/50">
+                    Selecione o assunto…
+                  </option>
+                  {SUBJECTS.map((s) => (
+                    <option key={s.value} value={s.value} className="bg-[#07080C] text-white">
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.subject && (
+                  <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3" /> {errors.subject}
+                  </p>
+                )}
+              </div>
+
+              {/* Mensagem */}
+              <div>
+                <label htmlFor="cMessage" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                  Mensagem *
+                </label>
+                <Textarea
+                  id="cMessage"
+                  required
+                  rows={5}
+                  value={form.message}
+                  onChange={(e) => setForm({ ...form, message: e.target.value })}
+                  placeholder="Descreva seu pedido, dúvida ou proposta…"
+                  className="form-input resize-y min-h-[120px]"
+                  aria-invalid={!!errors.message}
+                />
+                {errors.message && (
+                  <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3" /> {errors.message}
+                  </p>
+                )}
+              </div>
+
+              {/* Upload de arquivos */}
+              <div>
+                <label className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                  Anexos <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
+                </label>
+                <div
+                  onDrop={handleDrop}
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setDragActive(true);
+                  }}
+                  onDragLeave={() => setDragActive(false)}
+                  className={`border-2 border-dashed rounded-lg p-6 text-center transition ${
+                    dragActive
+                      ? 'border-gold bg-gold-dim/10'
+                      : 'border-white/[0.12] hover:border-white/25'
+                  }`}
+                >
+                  <Upload className="w-8 h-8 text-muted-foreground mx-auto mb-3" strokeWidth={1.5} />
+                  <p className="text-[0.88rem] text-muted-brand mb-1">
+                    Arraste arquivos aqui ou{' '}
+                    <label className="text-gold hover:text-gold-light underline underline-offset-2 cursor-pointer">
+                      clique para selecionar
+                      <input
+                        type="file"
+                        multiple
+                        accept={ACCEPTED_EXTENSIONS.join(',')}
+                        onChange={handleFileChange}
+                        className="sr-only"
+                      />
+                    </label>
+                  </p>
+                  <p className="text-[0.72rem] text-muted-foreground">
+                    PDF, DWG, DXF, JPG, PNG, WebP · até 4 MB por arquivo · máx. 3 arquivos
+                  </p>
+                </div>
+
+                {/* Lista de arquivos */}
+                {files.length > 0 && (
+                  <ul className="mt-3 space-y-2">
+                    {files.map((f) => (
+                      <li
+                        key={f.id}
+                        className="flex items-center gap-3 bg-surface2 border border-white/[0.08] rounded-md p-3"
+                      >
+                        <FileText className="w-4 h-4 text-gold flex-shrink-0" />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-[0.85rem] text-foreground truncate">
+                            {f.file.name}
+                          </p>
+                          <p className="text-[0.7rem] text-muted-foreground">
+                            {formatBytes(f.file.size)}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => removeFile(f.id)}
+                          aria-label={`Remover ${f.file.name}`}
+                          className="text-muted-foreground hover:text-red-400 transition flex-shrink-0"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              {/* Consentimento LGPD */}
+              <div>
+                <label className="flex items-start gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={form.consent}
+                    onChange={(e) => setForm({ ...form, consent: e.target.checked })}
+                    className="mt-1 w-4 h-4 accent-gold cursor-pointer"
+                    aria-invalid={!!errors.consent}
+                  />
+                  <span className="text-[0.8rem] text-muted-brand leading-relaxed">
+                    Li e concordo com a{' '}
+                    <Link
+                      href="/politica-de-privacidade"
+                      className="text-gold hover:text-gold-light underline underline-offset-2"
+                    >
+                      Política de Privacidade
+                    </Link>{' '}
+                    e autorizo o contato comercial conforme a Lei 13.709/2018 (LGPD).
+                  </span>
+                </label>
+                {errors.consent && (
+                  <p className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                    <AlertCircle className="w-3 h-3" /> {errors.consent}
+                  </p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-gold text-background hover:bg-gold-light font-medium h-12"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Enviando…
+                  </>
+                ) : (
+                  <>
+                    Enviar mensagem
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </>
+                )}
+              </Button>
+
+              <p className="text-[0.72rem] text-muted-foreground text-center">
+                Resposta em até 1 dia útil. Para urgências, ligue{' '}
+                <a href="tel:+554130570873" className="text-gold hover:text-gold-light">
+                  {PHONE_COMMERCIAL}
+                </a>
+                .
+              </p>
+            </form>
+          </motion.div>
         </div>
-      </main>
+      </div>
+    </main>
     </>
   );
 }

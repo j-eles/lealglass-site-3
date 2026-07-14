@@ -14,6 +14,7 @@ import {
   type FormEvent,
 } from 'react';
 import { motion, useInView, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 import {
   ArrowRight,
   Menu,
@@ -91,6 +92,8 @@ const NAV_LINKS = [
   { label: 'Diferenciais', href: '#diferenciais' },
   { label: 'Depoimentos', href: '#depoimentos' },
   { label: 'FAQ', href: '#faq' },
+  { label: 'Contato', href: '/contato' },
+  { label: 'Privacidade', href: '/politica-de-privacidade' },
 ];
 
 const TRUST_ITEMS = [
@@ -108,133 +111,105 @@ const HERO_STATS = [
 
 const METRICS = [
   { value: 200, suffix: '+', label: 'Obras entregues em Curitiba e região' },
-  { value: 15, suffix: '.000 m²', label: 'De esquadrias fabricadas e instaladas' },
+  { value: 15, suffix: '.000+ m²', label: 'De esquadrias fabricadas e instaladas' },
   { value: 5, suffix: ' anos', label: 'De garantia em estrutura e vedação' },
   { value: 98, suffix: '%', label: 'De clientes que retornam' },
 ];
 
+// Sistemas organizados por CATEGORIA ARQUITETÔNICA (jornada do cliente), não por sistema técnico.
+// Texto minimalista — imagem vende mais que ficha técnica.
 const SISTEMAS = [
   {
     n: '01',
-    title: 'Fachada Ventilada',
-    tag: 'Estrutural · Vidro fixado por estrutura',
-    desc: 'Vidros fixados em perfis estruturais aparentes de alta resistência. Vãos livres acima de 3 m com zero deflexão sob carga de vento.',
-    bullets: ['Vãos até 3,5 m', 'Câmara de isolamento', 'Vidro laminado 10mm'],
-    icon: Layers,
-    img: '/obras-curated/varanda-vidro-branca.jpeg',
+    categoria: 'Residências de Alto Padrão',
+    sistema: 'Esquadrias Sob Medida · Alumínio e PVC',
+    frases: ['Grandes vãos.', 'Precisão estrutural.', 'Máxima transparência.'],
+    img: '/obras-curated-v2/varanda-vidro-branca.webp',
   },
   {
     n: '02',
-    title: 'Linha Perfecta Plus 3.5',
-    tag: '3,5 mm · Performance térmica',
-    desc: 'Sistema de esquadria de alto desempenho com câmara européia de isolamento térmico e acústico. Perfil mínimo para máxima transparência.',
-    bullets: ['Perfil 3,5 mm', 'Isolamento térmico', 'Isolamento Acústico'],
-    icon: Wind,
-    img: '/obras-curated/casa-minimalista-janelas.jpeg',
+    categoria: 'Edifícios Corporativos',
+    sistema: 'Pele de Vidro · Curtain Wall',
+    frases: ['Perfis minimalistas.', 'Desempenho termoacústico.', 'Escala vertical.'],
+    img: '/obras-curated-v2/fachada3.webp',
   },
   {
     n: '03',
-    title: 'Structural Glazing',
-    tag: 'Curtain wall · Performance',
-    desc: 'Sistema de fachada contínua com perfilhagem oculta. Estanqueidade, desempenho termoacústico e drenagem controlada.',
-    bullets: ['Perfilhagem oculta', 'Drenagem controlada', 'Edifícios corporativos'],
-    icon: Building2,
-    img: '/obras-curated/predio-comercial-vidro.jpeg',
+    categoria: 'Grandes Vãos',
+    sistema: 'Structural Glazing · Vidro Estrutural',
+    frases: ['Vãos acima de 3 metros.', 'Perfilagem oculta.', 'Luz sem interrupção.'],
+    img: '/obras-curated-v2/hospital-sao-vicente-araucaria.webp',
   },
   {
     n: '04',
-    title: 'Guarda-Corpos de Vidro',
-    tag: 'Bordas · Segurança NBR 14718',
-    desc: 'Guarda-corpos em vidro laminado temperado com fixação por pinos ou perfil embutido. Atende à NBR 14718 para cargas horizontais.',
-    bullets: ['Laminado temperado', 'NBR 14718', 'Fixação embutida'],
-    icon: GlassWater,
-    img: '/obras-curated/varanda-vidro-mar.jpeg',
+    categoria: 'Minimal Frame',
+    sistema: 'Linha Perfecta Plus 3.5',
+    frases: ['Perfil de 3,5 mm.', 'Isolamento térmico.', 'A arquitetura aparece.'],
+    img: '/obras-curated-v2/fachada2.webp',
   },
   {
     n: '05',
-    title: 'Esquadrias Sob Medida',
-    tag: 'Personalizada · Arquitetura',
-    desc: 'Janelas, portas e painéis projetados para a arquitetura específica de cada obra. Maximização de ventilação e integração visual.',
-    bullets: ['Projeto por obra', 'Max-ventilação', 'Integração visual'],
-    icon: Square,
-    img: '/obras-curated/residencial-nice-vidros-azul.jpeg',
+    categoria: 'Fachadas de Vidro',
+    sistema: 'Guarda-Corpos · Fachada Contínua',
+    frases: ['Vidro laminado temperado.', 'Segurança NBR 14718.', 'Continuidade visual.'],
+    img: '/obras-curated-v2/guarda-corpo.webp',
   },
   {
     n: '06',
-    title: 'Manutenção & Pós-Venda',
-    tag: 'Garantia · Equipe em campo 48h',
-    desc: 'Vistoria preventiva no 12º mês inclusa no contrato. Atendimento em campo em até 48h.',
-    bullets: ['Vistoria 12º mês', '48h no campo', 'Equipe própria'],
-    icon: Wrench,
-    img: '/obras-curated/predio-fachada-vidro-concreto.jpeg',
+    categoria: 'Espaços Comerciais',
+    sistema: 'Fachada Comercial · Vedação Técnica',
+    frases: ['Vidros de grande formato.', 'Estrutura metálica.', 'Durabilidade NBR 15928.'],
+    img: '/obras-curated-v2/fachada16.webp',
   },
 ];
 
 const OBRAS = [
   {
-    name: 'Residência Casa de Vidro',
-    city: 'Curitiba, PR',
-    area: '420 m²',
-    system: 'Structural Glazing',
-    year: '2024',
-    desc: 'Casa moderna com estrutura de vidro e alumínio. Vãos amplos com máxima transparência e integração visual com a área externa.',
-    tags: ['Structural Glazing', 'Vidro temperado', 'Vãos amplos'],
-    img: '/obras-curated/varanda-vidro-branca.jpeg',
+    name: 'Edifício Marbella',
+    city: 'Caiobá, PR',
+    img: '/obras-curated-v2/edificio-marbella-caioba-pr.webp',
     span: 'lg:col-span-2 lg:row-span-2',
   },
   {
-    name: 'Edifício Residencial Nice',
-    city: 'Curitiba, PR',
-    area: '4.200 m²',
-    system: 'Fachada Contínua',
-    year: '2024',
-    desc: 'Edifício residencial com fachada de vidros azuis e estrutura de alumínio. 84 unidades entregues em prédio habitado.',
-    tags: ['Fachada contínua', '84 unidades', 'Vidros azuis'],
-    img: '/obras-curated/residencial-nice-vidros-azul.jpeg',
+    name: 'Residência Alphaville',
+    city: 'Barueri, SP',
+    img: '/obras-curated-v2/residencia-alphaville-barueri-sp.webp',
     span: '',
   },
   {
-    name: 'Edifício Comercial',
-    city: 'Curitiba, PR',
-    area: '3.600 m²',
-    system: 'Fachada Ventilada',
-    year: '2024',
-    desc: 'Edifício comercial com fachada de vidros e estrutura metálica. Curtain wall com perfilhagem oculta e drenagem controlada.',
-    tags: ['Curtain wall', 'Perfilhagem oculta', 'Estrutura metálica'],
-    img: '/obras-curated/predio-comercial-vidro.jpeg',
+    name: 'Nichele Unidade',
+    city: 'Araucária, PR',
+    img: '/obras-curated-v2/nichele-unidade-araucaria-pr.webp',
     span: '',
   },
   {
-    name: 'Edifício Fachada Mixta',
+    name: 'Residência Alphaville',
     city: 'Curitiba, PR',
-    area: '5.200 m²',
-    system: 'Structural Glazing',
-    year: '2023',
-    desc: 'Prédio alto com fachada de vidro e concreto. Composição arquitetônica premium com esquadrias de alto desempenho térmico.',
-    tags: ['Vidro + concreto', 'Alto desempenho', 'Premium'],
-    img: '/obras-curated/predio-fachada-vidro-concreto.jpeg',
+    img: '/obras-curated-v2/residencia-alphaville-curitiba-pr.webp',
     span: '',
   },
   {
-    name: 'Residência Minimalista',
-    city: 'Campina Grande do Sul, PR',
-    area: '320 m²',
-    system: 'Esquadrias Sob Medida',
-    year: '2024',
-    desc: 'Casa minimalista com grandes janelas e integração visual total. Perfil mínimo para máxima transparência.',
-    tags: ['Minimalista', 'Grandes janelas', 'Perfil mínimo'],
-    img: '/obras-curated/casa-minimalista-janelas.jpeg',
+    name: 'Residencial Nice',
+    city: 'Caiobá, PR',
+    img: '/obras-curated-v2/residencial-nice-caioba-pr.webp',
     span: 'lg:col-span-2',
   },
   {
-    name: 'Galpão Industrial',
-    city: 'São José dos Pinhais, PR',
-    area: '1.800 m²',
-    system: 'Fachada Industrial',
-    year: '2023',
-    desc: 'Fachada industrial com vidros de grande formato e estrutura metálica. Atende NBR 15928 e NBR 15575.',
-    tags: ['Industrial', 'NBR 15928', 'Vidros grandes'],
-    img: '/obras-curated/fachada-industrial-vidros.jpeg',
+    name: 'Shopping Pinheirinho Mall',
+    city: 'Curitiba, PR',
+    img: '/obras-curated-v2/shopping-pinheirinho-mall-curitiba-pr.webp',
+    span: '',
+  },
+  {
+    name: 'Hospital São Vicente',
+    city: 'Araucária, PR',
+    img: '/obras-curated-v2/hospital-sao-vicente-araucaria-pr.webp',
+    span: '',
+  },
+  {
+    name: 'Shopping MK',
+    city: 'Caiobá, PR',
+    img: '/obras-curated-v2/shopping-mk-caioba-pr.webp',
     span: '',
   },
 ];
@@ -348,7 +323,7 @@ const FAQ_ITEMS = [
   },
   {
     q: 'Qual a garantia oferecida pela Leal Glass?',
-    a: '5 anos de garantia em estrutura e vedação. Ferragens e componentes mecânicos: 5 anos. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
+    a: '5 anos de garantia em estrutura e vedação. A visita de manutenção preventiva no 12º mês está inclusa no contrato.',
   },
   {
     q: 'Vocês atendem fora de Curitiba?',
@@ -364,7 +339,7 @@ const FAQ_ITEMS = [
   },
 ];
 
-const WHATSAPP_NUMBER = '5541998512093';
+const WHATSAPP_NUMBER = '5541998612093';
 const PHONE_LANDLINE = '+554130570873';
 const WHATSAPP_MSG =
   'Olá! Vim pelo site e gostaria de solicitar um diagnóstico técnico gratuito para o meu empreendimento.';
@@ -386,19 +361,42 @@ function useScrolled(threshold = 40) {
 
 function useCountUp(target: number, inView: boolean, duration = 1600) {
   const [value, setValue] = useState(0);
+  const startedRef = useRef(false);
+
   useEffect(() => {
-    if (!inView) return;
-    let raf = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const p = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setValue(Math.round(eased * target));
-      if (p < 1) raf = requestAnimationFrame(tick);
+    if (startedRef.current) return;
+
+    // Inicia a animação quando entra em view
+    // OU após 1.5s como fallback (caso o IntersectionObserver falhe em mobile)
+    const startAnimation = () => {
+      if (startedRef.current) return;
+      startedRef.current = true;
+
+      let raf = 0;
+      const start = performance.now();
+      const tick = (now: number) => {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setValue(Math.round(eased * target));
+        if (p < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+      return () => cancelAnimationFrame(raf);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+
+    if (inView) {
+      const cleanup = startAnimation();
+      return cleanup;
+    }
+
+    // Fallback: inicia após 1.5s mesmo sem inView
+    const fallbackTimer = setTimeout(() => {
+      startAnimation();
+    }, 1500);
+
+    return () => clearTimeout(fallbackTimer);
   }, [inView, target, duration]);
+
   return value;
 }
 
@@ -421,11 +419,13 @@ function Reveal({
   delay = 0,
   y = 28,
   className = '',
+  ...rest
 }: {
   children: React.ReactNode;
   delay?: number;
   y?: number;
   className?: string;
+  [key: string]: unknown;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: '-60px' });
@@ -436,6 +436,7 @@ function Reveal({
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={className}
+      {...rest}
     >
       {children}
     </motion.div>
@@ -591,13 +592,13 @@ export default function Home() {
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10 flex items-center justify-between">
             {/* Logo */}
             <a href="#hero" className="flex items-center gap-3 group" aria-label="Leal Glass — início">
-              <img
+              <Image
                 src="/logo-navbar.png"
                 alt="Logotipo Leal Glass"
                 width={40}
                 height={40}
                 className="w-10 h-10 object-contain"
-                fetchPriority="high"
+                priority
               />
               <span className="font-display text-xl tracking-tight text-foreground">
                 Leal <span className="text-gold italic">Glass</span>
@@ -701,28 +702,20 @@ export default function Home() {
           aria-label="Apresentação"
           className="relative min-h-[100svh] flex items-end overflow-hidden pt-32 pb-16"
         >
-          {/* Background video — autoplay muted loop, with image poster fallback */}
+          {/* Background video — plays once and stops on last frame. No poster, no fallback image. */}
           <div className="absolute inset-0 z-0" aria-hidden="true">
             <video
               autoPlay
               muted
-              loop
               playsInline
               preload="auto"
-              poster="/obras-curated/hero-casa-vidro.jpeg"
               className="w-full h-full object-cover object-center"
             >
-              <source src="/hero-video.mp4" type="video/mp4" />
-              {/* Fallback for browsers without video support */}
-              <img
-                src="/obras-curated/hero-casa-vidro.jpeg"
-                alt=""
-                className="w-full h-full object-cover object-center"
-              />
+              <source src="/video-hero-2.mp4" type="video/mp4" />
+              <source src="/video_hero.webm" type="video/webm" />
             </video>
-            {/* Overlays to keep text readable over video */}
-            <div className="absolute inset-0 bg-gradient-to-b from-background/75 via-background/45 to-background" />
-            <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-b from-background/85 via-background/70 to-background" />
+            <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-background/20" />
           </div>
 
           {/* Content */}
@@ -741,15 +734,27 @@ export default function Home() {
                 </span>
               </div>
 
+              {/* SEO eyebrow — keyword visível para Google sem prejudicar a poesia do H1 */}
+              <span className="block text-[0.78rem] font-mono-brand uppercase tracking-[0.22em] text-gold/80 mb-4">
+                Esquadrias de Alumínio de Alto Padrão · Curitiba
+              </span>
+
               <h1 className="font-display text-[clamp(2.5rem,6vw,5rem)] leading-[1.02] tracking-tight text-foreground mb-5">
                 Cada milímetro<br />
                 <span className="text-gold italic">influencia o valor</span><br />
                 da sua obra
               </h1>
 
+              {/* H2 oculto para SEO — reforça keyword sem atrapalhar a leitura visual */}
+              <h2 className="sr-only">
+                Fachadas e esquadrias de alumínio de alto padrão em Curitiba — Structural Glazing,
+                Perfecta Plus 3.5, guarda-corpos de vidro e fachadas ventiladas para residências,
+                edifícios corporativos e construções de alto padrão no Paraná.
+              </h2>
+
               <p className="max-w-[480px] text-[1.05rem] leading-relaxed text-muted-brand mb-10">
                 O vidro aproxima. A engenharia sustenta. A arquitetura aparece.
-                Para construtoras e escritórios que não admitem retrabalho.
+                Para construtoras, escritórios e proprietários que não admitem retrabalho.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 mb-14">
@@ -782,14 +787,6 @@ export default function Home() {
                 ))}
               </div>
             </motion.div>
-          </div>
-
-          {/* Scroll cue — visible on all viewports */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 text-muted-brand">
-            <span className="text-[0.62rem] font-mono-brand uppercase tracking-[0.25em]">
-              Role
-            </span>
-            <div className="w-px h-10 bg-gradient-to-b from-gold to-transparent" />
           </div>
         </section>
 
@@ -844,11 +841,11 @@ export default function Home() {
                   viewport={{ once: true, margin: '-25% 0px -25% 0px' }}
                   transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94] }}
                 >
-                  <div className="font-display text-[clamp(3.5rem,12vw,9rem)] leading-[0.9] tracking-tight text-foreground mb-5">
+                  <div className="font-display text-[clamp(4rem,15vw,12rem)] leading-[0.85] tracking-tight text-foreground mb-8">
                     <CountUp target={m.value} inView={metricsInView} />
                     <span className="text-gold">{m.suffix}</span>
                   </div>
-                  <p className="text-[clamp(0.95rem,1.8vw,1.3rem)] text-muted-brand leading-snug max-w-[480px] mx-auto">
+                  <p className="text-[clamp(0.7rem,1.2vw,0.9rem)] text-gold font-mono-brand uppercase tracking-[0.3em] max-w-[480px] mx-auto">
                     {m.label}
                   </p>
                 </motion.div>
@@ -875,79 +872,85 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ═══ SISTEMAS — full-screen image panels, scroll-triggered (no sticky overlap) ═══ */}
+        {/* ═══ SISTEMAS — organizados por categoria arquitetônica (jornada do cliente) ═══ */}
         <section
           id="sistemas"
           aria-labelledby="sistemas-title"
         >
           {/* Section intro */}
-          <div className="max-w-[1280px] mx-auto px-6 lg:px-10 pt-24 pb-12">
+          <div className="max-w-[1280px] mx-auto px-6 lg:px-10 pt-32 pb-16">
             <Reveal className="max-w-[680px]">
-              <span className="eyebrow mb-5">Sistemas &amp; Produtos</span>
+              <span className="eyebrow mb-5">Soluções por categoria</span>
               <h2
                 id="sistemas-title"
-                className="font-display text-[clamp(1.9rem,3.6vw,2.9rem)] leading-[1.08] tracking-tight mb-5"
+                className="font-display text-[clamp(2rem,4vw,3.2rem)] leading-[1.05] tracking-tight mb-6"
               >
-                Cada sistema, uma{' '}
-                <span className="text-gold italic">decisão de engenharia</span>
+                A arquitetura{' '}
+                <span className="text-gold italic">define o sistema</span>
               </h2>
-              <p className="text-muted-brand text-[1rem] leading-relaxed max-w-[520px]">
-                Role para conhecer os seis sistemas que executamos — todos com
-                ART e garantia de 5 anos.
+              <p className="text-muted-brand text-[1rem] leading-relaxed max-w-[440px]">
+                Comece pelo resultado que você busca. A engenharia encontra o
+                caminho.
               </p>
             </Reveal>
           </div>
 
-          {/* Full-screen image panels — each system is a full-viewport section */}
+          {/* Full-screen image panels — cada categoria é uma tela inteira */}
           {SISTEMAS.map((s) => (
             <div
               key={s.n}
-              className="min-h-[85vh] flex items-end overflow-hidden relative"
+              className="min-h-[90vh] flex items-end overflow-hidden relative"
             >
               {/* Full-bleed background image */}
               <div className="absolute inset-0 z-0" aria-hidden="true">
-                <motion.img
-                  src={s.img}
-                  alt={`${s.title} — sistema de esquadrias executado pela Leal Glass`}
-                  loading="lazy"
+                <motion.div
                   initial={{ scale: 1.12, opacity: 0.3 }}
                   whileInView={{ scale: 1, opacity: 1 }}
                   viewport={{ once: true, margin: '-15% 0px -15% 0px' }}
                   transition={{ duration: 1.4, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/55 to-transparent" />
-                <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent" />
+                  className="w-full h-full relative"
+                >
+                  <Image
+                    src={s.img}
+                    alt={`${s.categoria} — ${s.sistema} executado pela Leal Glass`}
+                    fill
+                    sizes="100vw"
+                    className="object-cover"
+                  />
+                </motion.div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/85 via-background/30 to-transparent" />
               </div>
 
-              {/* Text content overlay */}
-              <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-10 w-full pb-14 lg:pb-20 pt-20">
+              {/* Text content — minimalista: categoria + 3 frases curtas */}
+              <div className="relative z-10 max-w-[1280px] mx-auto px-6 lg:px-10 w-full pb-20 lg:pb-28 pt-24">
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: '-10% 0px -10% 0px' }}
                   transition={{ duration: 0.9, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-                  className="max-w-[540px]"
+                  className="max-w-[600px]"
                 >
-                  <span className="font-mono-brand text-[0.72rem] text-gold tracking-[0.2em] mb-3 block">
-                    {s.n} · {s.tag}
+                  <span className="font-mono-brand text-[0.72rem] text-gold tracking-[0.22em] mb-4 block uppercase">
+                    {s.n} · {s.sistema}
                   </span>
-                  <h3 className="font-display text-[clamp(1.8rem,3.5vw,3rem)] leading-[1.08] tracking-tight mb-4">
-                    {s.title}
+                  <h3 className="font-display text-[clamp(2.2rem,5vw,4rem)] leading-[1.02] tracking-tight mb-7">
+                    {s.categoria}
                   </h3>
-                  <p className="text-[0.95rem] text-foreground/90 leading-relaxed mb-5 max-w-[420px]">
-                    {s.desc}
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {s.bullets.map((b) => (
-                      <span
-                        key={b}
-                        className="px-3 py-1.5 bg-gold-dim/60 border border-gold-border/40 rounded-full text-[0.72rem] text-gold-light backdrop-blur-sm"
-                      >
-                        {b}
-                      </span>
+                  <div className="space-y-2 mb-8">
+                    {s.frases.map((frase) => (
+                      <p key={frase} className="text-[clamp(1rem,1.8vw,1.3rem)] text-foreground/95 leading-snug font-light">
+                        {frase}
+                      </p>
                     ))}
                   </div>
+                  <a
+                    href="#orcamento"
+                    className="inline-flex items-center gap-2 text-[0.82rem] text-gold hover:text-gold-light transition-colors group"
+                  >
+                    Saiba mais
+                    <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" strokeWidth={1.75} />
+                  </a>
                 </motion.div>
               </div>
             </div>
@@ -957,7 +960,7 @@ export default function Home() {
         {/* ═══ PORTFÓLIO / OBRAS ═══ */}
         <section
           id="obras"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05]"
           aria-labelledby="obras-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -987,7 +990,7 @@ export default function Home() {
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 auto-rows-[260px]">
               {OBRAS.map((o, i) => (
                 <Reveal
-                  key={o.name}
+                  key={`${o.name}-${o.city}`}
                   delay={(i % 3) * 0.08}
                   className={`gallery-item group relative overflow-hidden rounded-lg cursor-pointer ${o.span}`}
                 >
@@ -997,42 +1000,20 @@ export default function Home() {
                     className="absolute inset-0 w-full h-full text-left"
                     aria-label={`Ampliar imagem da obra ${o.name}`}
                   >
-                    <img
+                    <Image
                       src={o.img}
-                      alt={`${o.name} — ${o.system} executada pela Leal Glass em ${o.city}`}
-                      loading="lazy"
+                      alt={`${o.name} — ${o.city}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="gallery-img w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background via-background/30 to-transparent" />
                     <div className="absolute inset-0 flex flex-col justify-end p-6">
-                      <div className="gallery-overlay mb-3">
-                        <p className="text-[0.85rem] text-foreground/90 leading-relaxed mb-3">
-                          {o.desc}
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {o.tags.map((t) => (
-                            <span
-                              key={t}
-                              className="px-2.5 py-1 bg-white/[0.06] border border-white/[0.08] rounded-full text-[0.65rem] text-muted-brand"
-                            >
-                              {t}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
                       <h3 className="font-display text-xl text-foreground tracking-tight mb-1">
                         {o.name}
                       </h3>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.72rem] text-muted-brand">
-                        <span className="flex items-center gap-1">
-                          <MapPin className="w-3 h-3" /> {o.city}
-                        </span>
-                        <span>·</span>
-                        <span>{o.area}</span>
-                        <span>·</span>
-                        <span className="text-gold">{o.system}</span>
-                        <span>·</span>
-                        <span>{o.year}</span>
+                      <div className="flex items-center gap-1.5 text-[0.72rem] text-muted-brand">
+                        <MapPin className="w-3 h-3 text-gold" /> {o.city}
                       </div>
                     </div>
                   </button>
@@ -1045,7 +1026,7 @@ export default function Home() {
         {/* ═══ DIFERENCIAIS — comparison table ═══ */}
         <section
           id="diferenciais"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05] bg-surface-3"
           aria-labelledby="dif-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1157,7 +1138,7 @@ export default function Home() {
         {/* ═══ PROCESSO ═══ */}
         <section
           id="processo"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05]"
           aria-labelledby="proc-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1220,7 +1201,7 @@ export default function Home() {
         {/* ═══ AUTORIDADE ═══ */}
         <section
           id="autoridade"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05] bg-surface-1"
           aria-labelledby="aut-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1256,7 +1237,7 @@ export default function Home() {
         {/* ═══ DEPOIMENTOS ═══ */}
         <section
           id="depoimentos"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05] bg-surface-2"
           aria-labelledby="dep-title"
         >
           <div className="max-w-[1280px] mx-auto px-6 lg:px-10">
@@ -1340,7 +1321,7 @@ export default function Home() {
         {/* ═══ FAQ ═══ */}
         <section
           id="faq"
-          className="py-24 lg:py-32 border-b border-white/[0.05]"
+          className="py-28 lg:py-40 border-b border-white/[0.05]"
           aria-labelledby="faq-title"
         >
           <div className="max-w-[820px] mx-auto px-6 lg:px-10">
@@ -1385,11 +1366,12 @@ export default function Home() {
           aria-labelledby="cta-title"
         >
           <div className="absolute inset-0 z-0" aria-hidden="true">
-            <img
-              src="/obras-curated/cta-bg-varanda-vidro.jpeg"
+            <Image
+              src="/obras-curated/cta-bg-varanda-vidro.webp"
               alt=""
-              loading="lazy"
-              className="w-full h-full object-cover opacity-15"
+              fill
+              sizes="100vw"
+              className="object-cover opacity-15"
             />
             <div className="absolute inset-0 bg-gradient-to-br from-background via-background/92 to-background/75" />
           </div>
@@ -1499,6 +1481,33 @@ export default function Home() {
                   {errors.phone && (
                     <p id="fPhone-err" className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
                       <X className="w-3 h-3" /> {errors.phone}
+                    </p>
+                  )}
+                </div>
+
+                {/* Email (opcional) */}
+                <div>
+                  <label htmlFor="fEmail" className="block text-[0.72rem] font-mono-brand uppercase tracking-[0.12em] text-muted-brand mb-2">
+                    Email <span className="text-muted-foreground/60 normal-case tracking-normal">(opcional)</span>
+                  </label>
+                  <input
+                    id="fEmail"
+                    type="email"
+                    autoComplete="email"
+                    value={form.email}
+                    onChange={(e) => {
+                      setForm({ ...form, email: e.target.value });
+                      if (errors.email) setErrors({ ...errors, email: '' });
+                    }}
+                    placeholder="voce@email.com"
+                    inputMode="email"
+                    aria-invalid={!!errors.email}
+                    aria-describedby={errors.email ? 'fEmail-err' : undefined}
+                    className={`form-input w-full px-4 py-3.5 rounded-md text-[0.9rem] text-foreground ${errors.email ? 'border-red-400/60' : ''}`}
+                  />
+                  {errors.email && (
+                    <p id="fEmail-err" className="mt-1.5 text-[0.75rem] text-red-400 flex items-center gap-1.5">
+                      <X className="w-3 h-3" /> {errors.email}
                     </p>
                   )}
                 </div>
@@ -1615,7 +1624,7 @@ export default function Home() {
           <div className="grid gap-10 md:grid-cols-[2fr_1fr_1fr_1fr] mb-12">
             <div>
               <a href="#hero" className="flex items-center gap-3 mb-4" aria-label="Leal Glass">
-                <img
+                <Image
                   src="/logo-navbar.png"
                   alt="Logotipo Leal Glass"
                   width={40}
@@ -1679,8 +1688,8 @@ export default function Home() {
               </h4>
               <ul className="space-y-2.5">
                 <li>
-                  <a href="https://wa.me/5541998512093" target="_blank" rel="noopener noreferrer" className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2">
-                    <MessageCircle className="w-3.5 h-3.5 text-gold" /> (41) 99851-2093
+                  <a href="https://wa.me/5541998612093" target="_blank" rel="noopener noreferrer" className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2">
+                    <MessageCircle className="w-3.5 h-3.5 text-gold" /> (41) 99861-2093
                   </a>
                 </li>
                 <li>
@@ -1689,8 +1698,11 @@ export default function Home() {
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:sistemas@lealglass.com.br" className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-gold" /> sistemas@lealglass.com.br
+                  <a
+                    href="mailto:contato@lealglass.com.br?subject=Or%C3%A7amento%20de%20esquadrias%20%E2%80%94%20Site%20Leal%20Glass&body=Ol%C3%A1%2C%20vim%20pelo%20site%20e%20gostaria%20de%20solicitar%20um%20or%C3%A7amento.%0A%0A%20Nome%3A%20%0A%20Telefone%2FWhatsApp%3A%20%0A%20Tipo%20de%20projeto%3A%20%0A%20Mensagem%3A%20"
+                    className="text-[0.85rem] text-muted-brand hover:text-foreground transition-colors flex items-center gap-2"
+                  >
+                    <Mail className="w-3.5 h-3.5 text-gold" /> contato@lealglass.com.br
                   </a>
                 </li>
                 <li className="text-[0.85rem] text-muted-brand flex items-start gap-2">
@@ -1875,23 +1887,21 @@ export default function Home() {
               onClick={(e) => e.stopPropagation()}
               className="max-w-[1100px] w-full"
             >
-              <img
+              <Image
                 src={OBRAS[lightbox].img}
-                alt={`${OBRAS[lightbox].name} — ${OBRAS[lightbox].system} em ${OBRAS[lightbox].city}`}
+                alt={`${OBRAS[lightbox].name} — ${OBRAS[lightbox].city}`}
+                width={1100}
+                height={700}
+                sizes="(max-width: 1100px) 100vw, 1100px"
                 className="w-full max-h-[68vh] object-contain rounded-lg"
+                priority
               />
               <div className="mt-6 text-center">
                 <h3 className="font-display text-2xl mb-2 tracking-tight">
                   {OBRAS[lightbox].name}
                 </h3>
-                <p className="text-muted-brand text-[0.92rem] max-w-[600px] mx-auto leading-relaxed mb-3">
-                  {OBRAS[lightbox].desc}
-                </p>
-                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-[0.78rem] text-muted-brand">
-                  <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {OBRAS[lightbox].city}</span>
-                  <span>·</span><span>{OBRAS[lightbox].area}</span>
-                  <span>·</span><span className="text-gold">{OBRAS[lightbox].system}</span>
-                  <span>·</span><span>{OBRAS[lightbox].year}</span>
+                <div className="flex items-center justify-center gap-1.5 text-[0.82rem] text-muted-brand">
+                  <MapPin className="w-3.5 h-3.5 text-gold" /> {OBRAS[lightbox].city}
                 </div>
               </div>
             </motion.div>

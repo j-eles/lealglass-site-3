@@ -130,7 +130,39 @@ async function setup() {
   console.log('   ✅ Tabela DeviceToken criada');
 
   // ════════════════════════════════════════════════════════════
-  // 4. Cria usuário admin inicial (se não houver nenhum)
+  // 4. Tabela ContatoMessage (formulário /contato com anexos)
+  // ════════════════════════════════════════════════════════════
+  console.log('');
+  console.log('📨 Criando tabela ContatoMessage...');
+  await client.execute(`
+    CREATE TABLE IF NOT EXISTS "ContatoMessage" (
+      "id" TEXT PRIMARY KEY NOT NULL,
+      "ticketId" TEXT NOT NULL UNIQUE,
+      "name" TEXT NOT NULL,
+      "company" TEXT,
+      "email" TEXT NOT NULL,
+      "phone" TEXT,
+      "subject" TEXT NOT NULL,
+      "message" TEXT NOT NULL,
+      "files" TEXT,
+      "ip" TEXT,
+      "status" TEXT NOT NULL DEFAULT 'new',
+      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );
+  `);
+  await client.execute(`
+    CREATE INDEX IF NOT EXISTS "ContatoMessage_createdAt_idx" ON "ContatoMessage"("createdAt");
+  `);
+  await client.execute(`
+    CREATE INDEX IF NOT EXISTS "ContatoMessage_status_idx" ON "ContatoMessage"("status");
+  `);
+  await client.execute(`
+    CREATE INDEX IF NOT EXISTS "ContatoMessage_subject_idx" ON "ContatoMessage"("subject");
+  `);
+  console.log('   ✅ Tabela ContatoMessage criada');
+
+  // ════════════════════════════════════════════════════════════
+  // 5. Cria usuário admin inicial (se não houver nenhum)
   // ════════════════════════════════════════════════════════════
   console.log('');
   console.log('🔑 Verificando usuários admin...');

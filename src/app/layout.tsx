@@ -32,7 +32,7 @@ const dmMono = DM_Mono({
 });
 
 const SITE_URL = "https://www.lealglass.com.br";
-const HERO_IMG = `${SITE_URL}/obras-curated/og-casa-cubo-vidro.jpeg`;
+const HERO_IMG = `${SITE_URL}/obras-curated/og-casa-cubo-vidro.webp`;
 
 /* ════════════════════════════════════════════════════════════
    METADATA — complete SEO, Open Graph, Twitter, robots
@@ -46,17 +46,23 @@ export const metadata: Metadata = {
   description:
     "Fachadas e esquadrias de alumínio de alto padrão em Curitiba. Structural Glazing, Linha Perfecta Plus 3.5 e guarda-corpos para construtoras, incorporadoras e arquitetos. 500+ obras entregues no prazo. ART inclusa. Proposta técnica em 24h.",
   keywords: [
+    "esquadrias Curitiba",
+    "janelas Curitiba",
+    "pvc Curitiba",
+    "fachadas Curitiba",
+    "pele de vidro Curitiba",
+    "corrimão vidro",
+    "esquadrias alto padrão",
     "esquadrias de alumínio Curitiba",
     "fachada alumínio Curitiba",
     "structural glazing Curitiba",
     "fachada estrutural",
     "guarda corpo de vidro",
-    "esquadrias alto padrão",
     "esquadrias para construtoras",
     "esquadrias para incorporadoras",
     "Leal Glass",
     "linha perfecta plus",
-    "fachada ventilada",
+    "pele de vidro",
     "curtain wall",
     "vidro estrutural",
     "ART esquadrias",
@@ -130,12 +136,12 @@ function JsonLd() {
       legalName: "Leal Glass Esquadrias Ltda",
       taxID: "30.624.485/0001-55",
       description:
-        "Fábrica de fachadas e esquadrias de alumínio de alto padrão em Curitiba — PR. Projeto, fabricação e instalação com ART e garantia de 5 anos.",
+        "Fábrica de esquadrias de alumínio e PVC, fachadas, pele de vidro, janelas e guarda-corpos de alto padrão em Curitiba — PR. Projeto, fabricação e instalação com ART e garantia de 5 anos.",
       url: SITE_URL,
       logo: `${SITE_URL}/logo-retina.png`,
       image: HERO_IMG,
       telephone: "+554130570873",
-      email: "sistemas@lealglass.com.br",
+      email: "contato@lealglass.com.br",
       address: {
         "@type": "PostalAddress",
         streetAddress: "Rua Antonio Ribeiro Macedo, 295, Xaxim",
@@ -295,18 +301,11 @@ export default function RootLayout({
       className={`${cormorant.variable} ${dmSans.variable} ${dmMono.variable}`}
     >
       <head>
-        {/* Preload hero image (poster do vídeo — LCP element) */}
-        <link
-          rel="preload"
-          as="image"
-          href="/obras-curated/hero-casa-vidro.jpeg"
-          fetchPriority="high"
-        />
-        {/* Preload hero video — carrega em paralelo com a imagem poster */}
+        {/* Preload hero video — carrega o mais cedo possível */}
         <link
           rel="preload"
           as="video"
-          href="/hero-video.mp4"
+          href="/video-hero-2.mp4"
           fetchPriority="high"
         />
         {/* PWA manifest — instalável no Android/iOS */}

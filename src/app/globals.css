@@ -271,7 +271,11 @@ body {
   transform: translateY(-1px);
 }
 
-/* ── Subtle grain / noise overlay for premium feel ── */
+/* ── Subtle background variations for depth between sections ── */
+.bg-surface-0 { background-color: #070707; }  /* darkest */
+.bg-surface-1 { background-color: #0B0B0D; }
+.bg-surface-2 { background-color: #111317; }
+.bg-surface-3 { background-color: #090909; }
 .grain-overlay {
   position: relative;
 }

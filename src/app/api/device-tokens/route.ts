@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
 
     const userAgent =
-      typeof body.userAgent === 'string' ? body.userAgent : null;
+      typeof body.userAgent === 'string' ? body.userAgent : undefined;
 
     await upsertDeviceToken(token, session.email, userAgent);
 

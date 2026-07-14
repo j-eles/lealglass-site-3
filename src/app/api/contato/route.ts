@@ -250,7 +250,6 @@ export async function POST(request: NextRequest) {
         if (!resendResponse.ok) {
           const errorText = await resendResponse.text();
           console.error('[CONTATO] Resend API error:', resendResponse.status, errorText);
-          // Não bloqueia o response — a mensagem já foi salva no banco
         }
       } catch (emailErr) {
         console.error('[CONTATO] Email error (não bloqueante):', emailErr);
@@ -264,7 +263,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (err) {
     console.error('[CONTATO] unexpected:', err);
-    // Se for erro de payload muito grande (Vercel 413)
     if (err instanceof Error && err.message.includes('body')) {
       return NextResponse.json(
         { error: 'Arquivos muito grandes. Limite total: 4 MB.' },
